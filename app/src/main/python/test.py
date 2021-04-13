@@ -4,6 +4,10 @@ import os
 
 
 def hello(x):
+
+    x = str(x)
+    x = list(x.split(", "))
+
     return x
 
 

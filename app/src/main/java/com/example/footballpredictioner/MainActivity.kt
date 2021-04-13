@@ -9,57 +9,35 @@ import java.lang.Integer.parseInt
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var nameTextView: EditText
-    private lateinit var ageTextView: EditText
-    private lateinit var viewAllButton: Button
-    private lateinit var addButton: Button
-    private lateinit var activeCustomerSwitch: Switch
-    private lateinit var listOfCustomers: ListView
 
-    private val testList = listOf("Tom","John","Martha","Peter")
+    private lateinit var fetchDataButton: Button
+    private lateinit var networkHandler:NetworkHandler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewAllButton = findViewById(R.id.btn_view_all)
-        addButton = findViewById(R.id.btn_add)
-        activeCustomerSwitch = findViewById(R.id.switch1)
-        listOfCustomers = findViewById(R.id.custmer_list)
-        nameTextView = findViewById(R.id.et_name)
-        ageTextView = findViewById(R.id.et_age)
+        fetchDataButton = findViewById(R.id.fetch_btn)
+        networkHandler = NetworkHandler(this)
 
-        val textFromPython = getPythonScript()
 
-        addButton.setOnClickListener{
+        fetchDataButton.setOnClickListener{
 
-            val customerModel = CustomerModel(-1, nameTextView.text.toString(), parseInt(ageTextView.text.toString()), activeCustomerSwitch.isChecked)
-            val dataBaseHelper = DataBaseHelper(applicationContext)
-            val success = dataBaseHelper.addNewCustomer(customerModel)
-
-            Toast.makeText(this, success.toString(), Toast.LENGTH_SHORT).show()
+            networkHandler.sendRequestForLeagueTeams("Premier")
+            Toast.makeText(this, "Send API request", Toast.LENGTH_SHORT).show()
 
         }
-
-        viewAllButton.setOnClickListener{
-
-            val dataBaseHelper = DataBaseHelper(applicationContext)
-            val allCustomers = dataBaseHelper.getAllCustomers()
-
-
-            Toast.makeText(this, textFromPython, Toast.LENGTH_SHORT).show()
-        }
-
 
 
     }
 
 
+
     private fun getPythonScript():String{
         val python = Python.getInstance()
         val pythonScript = python.getModule("test")
-        return pythonScript.callAttr("hello", testList).toString()
+        return pythonScript.callAttr("hello", "testList.toList()").toString()
     }
 
 }
