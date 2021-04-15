@@ -69,43 +69,32 @@ class NetworkHandler(context: Context) {
     }
 
 
-    fun sendRequestForMatches(){
+    fun sendRequestForMatches(listOfLeagueId:List<String>){
 
         //Premiership rounds dates
         val borderDates = TemporaryDataHolder.dataBaseHelper.getSeasonBorderDates()
-        
-        println(borderDates?.first)
-        println(borderDates?.second)
+        val leaguesStringParam = listOfLeagueId.joinToString(",")
 
 
-        //Premiership teams ids
-        val listOfIds = TemporaryDataHolder.dataBaseHelper.getTeamIdsFromGivenSeason("17141")
+        val matchesOfSeasonUrl= Uri.Builder().scheme(SCHEME).authority(AUTHORITY)
+                        .appendPath(API_PATH)
+                        .appendPath(API_VERSION)
+                        .appendPath("fixtures")
+                        .appendPath("between")
+                        .appendPath(borderDates?.first)
+                        .appendPath(borderDates?.second)
+                        .appendQueryParameter("api_token", API_TOKEN)
+                        .appendQueryParameter("leagues", leaguesStringParam)
 
 
+        val matchJsonObjReq = JsonObjectRequest(Request.Method.GET, matchesOfSeasonUrl.build().toString(), null,
+                { response -> TemporaryDataHolder.handleMatchResponse(response, matchesOfSeasonUrl) },
+                { error -> println("Error occurred - status: ${error?.message}") }
+        )
 
-        TemporaryDataHolder.dataBaseHelper.addNewMatch(1)
+        TemporaryDataHolder.add(matchJsonObjReq)
 
-//        listOfIds.forEach { teamId ->
-//            listOfRoundsDates.forEach { pairOfDates ->
-//                val matchDataUrl= Uri.Builder().scheme(SCHEME).authority(AUTHORITY)
-//                        .appendPath(API_PATH)
-//                        .appendPath(API_VERSION)
-//                        .appendPath("fixtures")
-//                        .appendPath("between")
-//                        .appendPath(pairOfDates.first)
-//                        .appendPath(pairOfDates.second)
-//                        .appendPath(teamId.toString())
-//                        .appendQueryParameter("api_token", API_TOKEN).build().toString()
-//
-//                val matchJsonObjReq = JsonObjectRequest(Request.Method.GET, matchDataUrl, null,
-//                        { response -> TemporaryDataHolder.handleMatchResponse(response) },
-//                        { error -> println("Error occurred - status: ${error?.message}") }
-//                )
-//
-//                TemporaryDataHolder.add(matchJsonObjReq)
-//
-//            }
-//        }
+
 
     }
 

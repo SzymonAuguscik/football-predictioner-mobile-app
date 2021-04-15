@@ -171,8 +171,6 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     @SuppressLint("Recycle")
     fun getSeasonBorderDates(): Pair<String, String>? {
 
-        val seasonRoundsDates = arrayListOf<Pair<String,String>>()
-
         val queryForStartDate = "SELECT $START_DATE FROM $ROUNDS_TABLE ORDER BY $START_DATE ASC LIMIT 1"
         val queryForEndDate = "SELECT $END_DATE FROM $ROUNDS_TABLE ORDER BY $END_DATE DESC LIMIT 1"
 
@@ -201,52 +199,20 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
 
-    fun getTeamIdsFromGivenSeason(seasonId:String): List<Long> {
-
-        val teamsIdFromSeason = arrayListOf<Long>()
-
-        val queryForDates = "SELECT $TEAM_ID FROM $TEAMS_TABLE WHERE $SEASON_ID = $seasonId"
-
-        val db = this.readableDatabase
-
-        val cursor = db.rawQuery(queryForDates, null)
-
-        if (cursor != null && cursor.count > 0 ) {
-            cursor.moveToFirst()
-            do{
-                val teamId = cursor.getLong(cursor.getColumnIndex(TEAM_ID))
-                teamsIdFromSeason.add(teamId)
-
-            } while(cursor.moveToNext())
-        }
-        cursor.close()
-
-
-        return teamsIdFromSeason
-    }
-
-    fun addNewMatch(id:Long):Boolean{
+    fun addNewMatch(match:MatchModel):Boolean{
 
         val db = this.writableDatabase
 
-        if(!checkIfMatchExists(id)){
+        if(!checkIfMatchExists(match.id)){
             val contentValues = ContentValues()
 
-            contentValues.put(MATCH_ID, 1)
-            contentValues.put(ROUND_ID, 1)
-            contentValues.put(LOCAL_TEAM_ID, 1)
-            contentValues.put(VISITOR_TEAM_ID, 1)
-            contentValues.put(LOCAL_TEAM_SCORE, 1)
-            contentValues.put(VISITOR_TEAM_SCORE, 1)
-            contentValues.put(DATE, 1)
-
-//            contentValues.put(MATCH_ID, match.id)
-//            contentValues.put(ROUND_ID, match.roundId)
-//            contentValues.put(LOCAL_TEAM_ID, match.localTeamId)
-//            contentValues.put(VISITOR_TEAM_ID, match.visitorTeamId)
-//            contentValues.put(LOCAL_TEAM_SCORE, match.localTeamScore)
-//            contentValues.put(VISITOR_TEAM_SCORE, match.visitorTeamScore)
-//            contentValues.put(DATE, match.date)
+            contentValues.put(MATCH_ID, match.id)
+            contentValues.put(ROUND_ID, match.roundId)
+            contentValues.put(LOCAL_TEAM_ID, match.localTeamId)
+            contentValues.put(VISITOR_TEAM_ID, match.visitorTeamId)
+            contentValues.put(LOCAL_TEAM_SCORE, match.localTeamScore)
+            contentValues.put(VISITOR_TEAM_SCORE, match.visitorTeamScore)
+            contentValues.put(DATE, match.date)
 
             val insert = db.insert(MATCHES_TABLE, null, contentValues)
             db.close()
@@ -265,7 +231,7 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
         val cursor = db.rawQuery(checkQuery, null)
 
-        return (cursor != null && cursor.count >0)
+        return (cursor != null && cursor.count > 0)
     }
 
 }

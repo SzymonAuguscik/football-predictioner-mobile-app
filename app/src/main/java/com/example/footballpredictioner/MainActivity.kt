@@ -38,16 +38,30 @@ class MainActivity : AppCompatActivity() {
 //            networkHandler.sendRequestForRounds("17141")
 //            networkHandler.sendRequestForTeams("Scottish Premiership","17141")
 //
+//            networkHandler.sendRequestForRounds("16222")
+//            networkHandler.sendRequestForTeams("Scottish Premiership","16222")
 //
+//            networkHandler.sendRequestForRounds("12963")
+//            networkHandler.sendRequestForTeams("Scottish Premiership","12963")
+
+
+
 //            networkHandler.sendRequestForRounds("17328")
 //            networkHandler.sendRequestForTeams("Superliga","17328")
+//
+//            networkHandler.sendRequestForRounds("16020")
+//            networkHandler.sendRequestForTeams("Superliga","16020")
+//
+//            networkHandler.sendRequestForRounds("12919")
+//            networkHandler.sendRequestForTeams("Superliga","12919")
 
-//            networkHandler.sendRequestForMatches()
+
+//            networkHandler.sendRequestForMatches(listOf("501","271"))
+
 
             Toast.makeText(this, "Send API request", Toast.LENGTH_SHORT).show()
 
         }
-
 
     }
 

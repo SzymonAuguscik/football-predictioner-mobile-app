@@ -124,20 +124,47 @@ object TemporaryDataHolder {
         }
     }
 
-    fun handleMatchResponse(response: JSONObject){
+    fun handleMatchResponse(response: JSONObject, matchesUrl:Uri.Builder){
 
-        println(response)
+
         response.let {
-            val matches = response.getJSONArray("data")
-            val matchesCount = matches.length()
+
+            handleMatchNextPage(response)
+
+            val metaInfo = response.getJSONObject("meta")
+            val pagination = metaInfo.getJSONObject("pagination")
+            val totalPages = pagination.getInt("total_pages")
 
 
+            for (i in 2 until totalPages+1){
 
-            for (i in 0 until matchesCount){
-                val match = matches.get(i) as JSONObject
+
+                val nextPageUrl = "${matchesUrl.build()}&page=${i}"
+
+                val matchJsonObjReq = JsonObjectRequest(Request.Method.GET, nextPageUrl, null,
+                        { response -> handleMatchNextPage(response)},
+                        { error -> println("Error occurred - status: ${error?.message}") }
+                )
+
+                add(matchJsonObjReq)
+            }
+
+        }
+    }
+
+    private fun handleMatchNextPage(response: JSONObject?) {
+
+        response?.let {
+
+            val matchesData = response.getJSONArray("data")
+            val matchesDataCount = matchesData.length()
+
+            for (i in 0 until matchesDataCount) {
+
+                val match = matchesData.get(i) as JSONObject
 
                 val matchId = match.getLong("id")
-                val roundId = match.getLong("round_id")
+                val roundId = if (match.isNull("round_id")) null else match.getLong("round_id")
                 val localTeamId = match.getLong("localteam_id")
                 val visitorTeamId = match.getLong("visitorteam_id")
                 val scores = match.getJSONObject("scores")
@@ -146,9 +173,9 @@ object TemporaryDataHolder {
                 val time = match.getJSONObject("time").getJSONObject("starting_at")
                 val date = time.getString("date")
 
-                val matchModel = MatchModel(matchId,roundId,localTeamId,visitorTeamId,localTeamScore,visitorTeamScore,date)
+                val matchModel = MatchModel(matchId, roundId, localTeamId, visitorTeamId, localTeamScore, visitorTeamScore, date)
 
-//                dataBaseHelper.addNewMatch(matchModel)
+                dataBaseHelper.addNewMatch(matchModel)
 
             }
         }
