@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var fetchDataButton: Button
-    private lateinit var networkHandler:NetworkHandler
+    private lateinit var networkHandler: NetworkHandler
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,14 +24,32 @@ class MainActivity : AppCompatActivity() {
 
         fetchDataButton.setOnClickListener{
 
-            networkHandler.sendRequestForLeagueTeams("Premier")
+            // Premiership last seasons id
+            // 17141 - 2020/2021
+            // 16222 - 2019/2020
+            // 12963 - 2018/2019
+
+            // Superliga last seasons id
+            // 17328 - 2020/2021
+            // 16020 - 2019/2020
+            // 12919 - 2018/2019
+
+
+//            networkHandler.sendRequestForRounds("17141")
+//            networkHandler.sendRequestForTeams("Scottish Premiership","17141")
+//
+//
+//            networkHandler.sendRequestForRounds("17328")
+//            networkHandler.sendRequestForTeams("Superliga","17328")
+
+//            networkHandler.sendRequestForMatches()
+
             Toast.makeText(this, "Send API request", Toast.LENGTH_SHORT).show()
 
         }
 
 
     }
-
 
 
     private fun getPythonScript():String{
