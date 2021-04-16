@@ -18,14 +18,12 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         python{
-            buildPython "python"
+            buildPython "python3"
 
             pip {
-                install "pandas"
-                install "numpy"
-                install "keras"
-                install "tensorflow"
-                install "scikit-learn"
+
+                install "-r", "requirements.txt"
+
             }
         }
 

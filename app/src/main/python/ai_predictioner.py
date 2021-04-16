@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
 
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.utils import to_categorical
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.utils import to_categorical
 
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle

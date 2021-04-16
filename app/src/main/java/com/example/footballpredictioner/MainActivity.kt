@@ -56,8 +56,8 @@ class MainActivity : AppCompatActivity() {
 //
 //
 //            networkHandler.sendRequestForMatches(listOf("501","271"))
-            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches()
-            val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches()
+            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
+            val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
             val pythonModuleName = "ai_predictioner"
             val pythonFunctionName = "make_predictions"
             val pythonResult = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable)
@@ -69,8 +69,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getPythonScript(module: String, function: String, playedMatches: String, nonPlayedMatches: String) : String {
+
         val python = Python.getInstance()
         val pythonScript = python.getModule(module)
+
         return pythonScript.callAttr(function, playedMatches, nonPlayedMatches).toString()
     }
 
