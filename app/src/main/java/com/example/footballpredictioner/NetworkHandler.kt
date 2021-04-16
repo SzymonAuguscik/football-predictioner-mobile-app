@@ -59,6 +59,8 @@ class NetworkHandler(context: Context) {
                 .appendPath(seasonId)
                 .appendQueryParameter("api_token", API_TOKEN).build().toString()
 
+        println(roundsUrl)
+
 
         val roundsJsonObjReq = JsonObjectRequest(Request.Method.GET, roundsUrl, null,
                 { response -> TemporaryDataHolder.handleRoundsResponse(response) },

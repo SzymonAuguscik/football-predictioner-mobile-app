@@ -117,9 +117,9 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         if (cursor != null && cursor.count > 0 ) {
             cursor.moveToFirst()
             do{
-                val wins = cursor.getInt(cursor.getColumnIndex("WINS"))
-                val draws = cursor.getInt(cursor.getColumnIndex("DRAWS"))
-                val loses = cursor.getInt(cursor.getColumnIndex("LOSES"))
+                val wins = cursor.getInt(cursor.getColumnIndex(WINS))
+                val draws = cursor.getInt(cursor.getColumnIndex(DRAWS))
+                val loses = cursor.getInt(cursor.getColumnIndex(LOSES))
                 sum = wins+draws+loses
             } while(cursor.moveToNext())
         }
@@ -234,4 +234,38 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         return (cursor != null && cursor.count > 0)
     }
 
+    @SuppressLint("Recycle")
+    fun getSelectAsText(query: String) : String {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+
+        var result = ""
+
+        if (cursor != null && cursor.count > 0 ) {
+            while(cursor.moveToNext()) {
+                for(i in 0 until cursor.columnCount) {
+                    result += cursor.getString(i)
+                    result += if (i != cursor.columnCount - 1) "," else "\n"
+                }
+            }
+        }
+
+        db.close()
+
+        return result
+    }
+
+    fun getOnlyPlayedMatches() : String {
+        val query = "SELECT $LOCAL_TEAM_ID, $VISITOR_TEAM_ID, $LOCAL_TEAM_SCORE, $VISITOR_TEAM_SCORE " +
+                "FROM $MATCHES_TABLE WHERE DATE < (SELECT DATE('now'))"
+
+        return getSelectAsText(query)
+    }
+
+    fun getOnlyNonPlayedMatches() : String {
+        val query = "SELECT $LOCAL_TEAM_ID, $VISITOR_TEAM_ID " +
+                "FROM $MATCHES_TABLE WHERE DATE > (SELECT DATE('now'))"
+
+        return getSelectAsText(query)
+    }
 }

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.chaquo.python.Python
-import java.lang.Integer.parseInt
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,9 +42,9 @@ class MainActivity : AppCompatActivity() {
 //
 //            networkHandler.sendRequestForRounds("12963")
 //            networkHandler.sendRequestForTeams("Scottish Premiership","12963")
-
-
-
+//
+//
+//
 //            networkHandler.sendRequestForRounds("17328")
 //            networkHandler.sendRequestForTeams("Superliga","17328")
 //
@@ -54,22 +53,25 @@ class MainActivity : AppCompatActivity() {
 //
 //            networkHandler.sendRequestForRounds("12919")
 //            networkHandler.sendRequestForTeams("Superliga","12919")
-
-
+//
+//
 //            networkHandler.sendRequestForMatches(listOf("501","271"))
-
+            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches()
+            val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches()
+            val pythonModuleName = "ai_predictioner"
+            val pythonFunctionName = "make_predictions"
+            val pythonResult = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable)
+            println(pythonResult)
 
             Toast.makeText(this, "Send API request", Toast.LENGTH_SHORT).show()
-
         }
 
     }
 
-
-    private fun getPythonScript():String{
+    private fun getPythonScript(module: String, function: String, playedMatches: String, nonPlayedMatches: String) : String {
         val python = Python.getInstance()
-        val pythonScript = python.getModule("test")
-        return pythonScript.callAttr("hello", "testList.toList()").toString()
+        val pythonScript = python.getModule(module)
+        return pythonScript.callAttr(function, playedMatches, nonPlayedMatches).toString()
     }
 
 }

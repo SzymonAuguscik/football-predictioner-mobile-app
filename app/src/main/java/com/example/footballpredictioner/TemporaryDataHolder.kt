@@ -74,7 +74,6 @@ object TemporaryDataHolder {
 
 
     private fun handleTeamStatsResponse(response: JSONObject, teamModel: TeamModel) {
-
         response.let {
             val data = response.getJSONObject("data")
             val statsData = data.getJSONObject("stats").getJSONArray("data").get(0) as JSONObject

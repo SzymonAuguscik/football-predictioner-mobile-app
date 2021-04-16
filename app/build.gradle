@@ -19,6 +19,14 @@ android {
 
         python{
             buildPython "python"
+
+            pip {
+                install "pandas"
+                install "numpy"
+                install "keras"
+                install "tensorflow"
+                install "scikit-learn"
+            }
         }
 
 
