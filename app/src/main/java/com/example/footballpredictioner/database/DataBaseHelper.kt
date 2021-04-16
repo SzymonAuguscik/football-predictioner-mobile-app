@@ -1,10 +1,13 @@
-package com.example.footballpredictioner
+package com.example.footballpredictioner.database
 
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.footballpredictioner.models.MatchModel
+import com.example.footballpredictioner.models.RoundModel
+import com.example.footballpredictioner.models.TeamModel
 
 class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
@@ -80,7 +83,7 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
 
 
-    fun addNewTeam(team:TeamModel):Boolean{
+    fun addNewTeam(team: TeamModel):Boolean{
         val db = this.writableDatabase
 
         if(!checkIfTeamRecordChanged(team.name, team.wins+team.draws+team.loses)){
@@ -130,7 +133,7 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
 
-    fun addNewRound(round:RoundModel):Boolean{
+    fun addNewRound(round: RoundModel):Boolean{
         val db = this.writableDatabase
 
 
@@ -199,7 +202,7 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
     }
 
 
-    fun addNewMatch(match:MatchModel):Boolean{
+    fun addNewMatch(match: MatchModel):Boolean{
 
         val db = this.writableDatabase
 

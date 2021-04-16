@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import com.chaquo.python.Python
+import com.example.footballpredictioner.api.NetworkHandler
+import com.example.footballpredictioner.api.TemporaryDataHolder
 
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 //
 //
 //            networkHandler.sendRequestForMatches(listOf("501","271"))
+            
             val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
             val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
             val pythonModuleName = "ai_predictioner"

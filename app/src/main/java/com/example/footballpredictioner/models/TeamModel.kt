@@ -1,4 +1,4 @@
-package com.example.footballpredictioner
+package com.example.footballpredictioner.models
 
 data class TeamModel(val id:Long, val name:String, val logoPath:String,
                      val leagueName: String, var venueName:String = "", var season:String = "",

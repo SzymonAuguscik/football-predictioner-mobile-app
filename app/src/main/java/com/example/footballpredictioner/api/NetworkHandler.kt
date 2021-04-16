@@ -1,4 +1,4 @@
-package com.example.footballpredictioner
+package com.example.footballpredictioner.api
 
 
 

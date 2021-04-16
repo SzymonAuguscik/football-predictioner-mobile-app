@@ -21,7 +21,7 @@ def load_data(data, prediction):
   # 0 - home win
   # 1 - draw
   # 2 - away win
-  df[['score']] = df['home_score'] - df['away_score']
+  df['score'] = df['home_score'] - df['away_score']
   df['score'] = df['score'].apply(lambda x: 0 if x > 0 else 2 if x < 0 else 1)
   df.drop(columns=['home_score', 'away_score'], inplace=True)
   df = shuffle(df)

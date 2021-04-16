@@ -1,21 +1,21 @@
-package com.example.footballpredictioner
+package com.example.footballpredictioner.api
 
 import android.content.Context
 import android.net.Uri
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley.newRequestQueue
+import com.example.footballpredictioner.database.DataBaseHelper
+import com.example.footballpredictioner.models.MatchModel
+import com.example.footballpredictioner.models.RoundModel
+import com.example.footballpredictioner.models.TeamModel
 import org.json.JSONObject
-import java.lang.Integer.parseInt
-import java.lang.Long.parseLong
 
 object TemporaryDataHolder {
 
     private lateinit var queue: RequestQueue
     lateinit var dataBaseHelper: DataBaseHelper
-
 
 
     fun prepare(context: Context){
@@ -50,7 +50,7 @@ object TemporaryDataHolder {
         }
     }
 
-    private fun fetchTeamStatistics(teamId: Int, seasonId:Int, teamModel:TeamModel){
+    private fun fetchTeamStatistics(teamId: Int, seasonId:Int, teamModel: TeamModel){
 
         val teamStatsUrl = Uri.Builder().scheme(NetworkHandler.SCHEME).authority(NetworkHandler.AUTHORITY)
             .appendPath(NetworkHandler.API_PATH)
@@ -141,7 +141,7 @@ object TemporaryDataHolder {
                 val nextPageUrl = "${matchesUrl.build()}&page=${i}"
 
                 val matchJsonObjReq = JsonObjectRequest(Request.Method.GET, nextPageUrl, null,
-                        { response -> handleMatchNextPage(response)},
+                        { response -> handleMatchNextPage(response) },
                         { error -> println("Error occurred - status: ${error?.message}") }
                 )
 
