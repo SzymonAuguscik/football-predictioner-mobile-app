@@ -5,60 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_blue"
-    tools:context=".MainActivity">
+    tools:context=".ChosenLeagueActivity"
+    >
 
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="254dp"
-        android:layout_height="243dp"
+        android:id="@+id/chosen_league_logo"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
         android:layout_marginTop="48dp"
-        android:contentDescription="@string/player_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ft_player" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="@string/app_name"
-        android:textColor="@color/black"
-        android:textSize="26sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <Spinner
-        android:id="@+id/leagues_spinner"
-        android:background="@color/light_gray"
-        android:popupBackground="@color/light_gray"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintCircleRadius="10sp"
-        android:layout_marginStart="72dp"
-        android:layout_marginLeft="72dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginRight="72dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:contentDescription="@string/chosen_league_logo_desc" />
 
     <Button
-        android:id="@+id/check_league_button"
+        android:id="@+id/table_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:text="@string/check_it_btn"
+        android:layout_marginBottom="32dp"
+        android:text="@string/table_btn_text"
+        app:backgroundTint="@color/dark_gray"
+        app:cornerRadius="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/predict_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.35" />
+
+    <Button
+        android:id="@+id/predict_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="@string/predict_btn_text"
+        app:backgroundTint="@color/dark_gray"
+        app:cornerRadius="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/schedule_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.35" />
+
+    <Button
+        android:id="@+id/schedule_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="74dp"
+        android:text="@string/schedule_btn_text"
         app:backgroundTint="@color/dark_gray"
         app:cornerRadius="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintWidth_percent="0.35" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

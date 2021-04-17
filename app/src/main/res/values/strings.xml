@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">FootballPredictioner</string>
+    <string name="app_name">Football Predictioner</string>
     <string name="fetch_data">Fetch</string>
+    <string name="chosen_league_logo_desc">Chosen league logo</string>
+    <string name="player_icon">PlayerIcon</string>
+    <string name="check_it_btn">Check it!</string>
+    <string name="table_btn_text">Table</string>
+    <string name="predict_btn_text">Predict</string>
+    <string name="schedule_btn_text">Schedule</string>
 </resources>

@@ -1,75 +1,89 @@
 package com.example.footballpredictioner
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import com.chaquo.python.Python
 import com.example.footballpredictioner.api.NetworkHandler
 import com.example.footballpredictioner.api.TemporaryDataHolder
+import com.example.footballpredictioner.models.LeagueModel
+import kotlin.properties.Delegates
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
 
-    private lateinit var fetchDataButton: Button
     private lateinit var networkHandler: NetworkHandler
+    private lateinit var leagues: Array<LeagueModel>
+    private lateinit var leaguesSpinner: Spinner
+    private lateinit var checkChosenLeagueButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        fetchDataButton = findViewById(R.id.fetch_btn)
         networkHandler = NetworkHandler(this)
+        checkChosenLeagueButton = findViewById(R.id.check_league_button)
 
 
-        fetchDataButton.setOnClickListener{
+        /* In professional distribution such kind of array should be fetched,
+        * for now it is statically initialized with fixed values.  */
+        leagues = arrayOf(
+            LeagueModel((-1).toLong(), "Pick a league...", null, null),
 
-            // Premiership last seasons id
-            // 17141 - 2020/2021
-            // 16222 - 2019/2020
-            // 12963 - 2018/2019
+            LeagueModel(501.toLong(), "Scottish Premiership",
+                "https://cdn.sportmonks.com/images/soccer/leagues/501.png",
+                seasons = mapOf(17141 to "2020/2021", 16222 to "2019/2020", 12963 to "2018/2019")),
 
-            // Superliga last seasons id
-            // 17328 - 2020/2021
-            // 16020 - 2019/2020
-            // 12919 - 2018/2019
+            LeagueModel(271.toLong(), "Superliga",
+                "https://cdn.sportmonks.com/images/soccer/leagues/271.png",
+                seasons = mapOf(17328 to "2020/2021", 16020 to "2019/2020", 12919 to "2018/2019"))
+        )
+
+        val leaguesAdapter = ArrayAdapter(this,
+            R.layout.support_simple_spinner_dropdown_item,
+            leagues.map { it.name })
+
+        leaguesSpinner = findViewById(R.id.leagues_spinner)
+        leaguesSpinner.onItemSelectedListener = this
+        leaguesSpinner.adapter = leaguesAdapter
 
 
-//            networkHandler.sendRequestForRounds("17141")
-//            networkHandler.sendRequestForTeams("Scottish Premiership","17141")
-//
-//            networkHandler.sendRequestForRounds("16222")
-//            networkHandler.sendRequestForTeams("Scottish Premiership","16222")
-//
-//            networkHandler.sendRequestForRounds("12963")
-//            networkHandler.sendRequestForTeams("Scottish Premiership","12963")
-//
-//
-//
-//            networkHandler.sendRequestForRounds("17328")
-//            networkHandler.sendRequestForTeams("Superliga","17328")
-//
-//            networkHandler.sendRequestForRounds("16020")
-//            networkHandler.sendRequestForTeams("Superliga","16020")
-//
-//            networkHandler.sendRequestForRounds("12919")
-//            networkHandler.sendRequestForTeams("Superliga","12919")
-//
-//
-//            networkHandler.sendRequestForMatches(listOf("501","271"))
-            
-            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
-            val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
-            val pythonModuleName = "ai_predictioner"
-            val pythonFunctionName = "make_predictions"
-            val pythonResult = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable)
-            println(pythonResult)
+        checkChosenLeagueButton.setOnClickListener {
 
-            Toast.makeText(this, "Send API request", Toast.LENGTH_SHORT).show()
+            val idx = leaguesSpinner.selectedItemPosition
+            val chosenLeague = leagues[idx]
+            val chosenLeagueSeasons = chosenLeague.seasons
+
+
+            /* Necessary requests for possible updates and then running python script with AI */
+            //TODO We should put code below into new thread to prevent next activity long loading
+
+//            chosenLeagueSeasons?.forEach { (key,_) ->
+//                networkHandler.sendRequestForRounds(key.toString())
+//                networkHandler.sendRequestForTeams(chosenLeague.name,key.toString())
+//                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
+//
+//                val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
+//                val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
+//                val pythonModuleName = "ai_predictioner"
+//                val pythonFunctionName = "make_predictions"
+//                val pythonResult = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable)
+//                println(pythonResult)
+//            }
+
+            val intent  = Intent(this,ChosenLeagueActivity::class.java)
+            intent.putExtra("chosenLeagueId", chosenLeague.id)
+            intent.putExtra("chosenLeagueName", chosenLeague.name)
+            intent.putExtra("chosenLeagueLogoUrl", chosenLeague.logoPath)
+            startActivity(intent)
+
         }
-
     }
+
 
     private fun getPythonScript(module: String, function: String, playedMatches: String, nonPlayedMatches: String) : String {
 
@@ -79,4 +93,12 @@ class MainActivity : AppCompatActivity() {
         return pythonScript.callAttr(function, playedMatches, nonPlayedMatches).toString()
     }
 
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if(position != 0 )
+            checkChosenLeagueButton.visibility = View.VISIBLE
+        else
+            checkChosenLeagueButton.visibility = View.INVISIBLE
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {}
 }
