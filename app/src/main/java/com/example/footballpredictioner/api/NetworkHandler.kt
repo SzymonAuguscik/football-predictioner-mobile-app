@@ -1,7 +1,6 @@
 package com.example.footballpredictioner.api
 
 
-
 import android.content.Context
 import android.net.Uri
 import com.android.volley.Request
@@ -71,11 +70,10 @@ class NetworkHandler(context: Context) {
     }
 
 
-    fun sendRequestForMatches(listOfLeagueId:List<String>){
+    fun sendRequestForMatches(leagueId:String){
 
         //Premiership rounds dates
         val borderDates = TemporaryDataHolder.dataBaseHelper.getSeasonBorderDates()
-        val leaguesStringParam = listOfLeagueId.joinToString(",")
 
 
         val matchesOfSeasonUrl= Uri.Builder().scheme(SCHEME).authority(AUTHORITY)
@@ -86,7 +84,7 @@ class NetworkHandler(context: Context) {
                         .appendPath(borderDates?.first)
                         .appendPath(borderDates?.second)
                         .appendQueryParameter("api_token", API_TOKEN)
-                        .appendQueryParameter("leagues", leaguesStringParam)
+                        .appendQueryParameter("leagues", leagueId)
 
 
         val matchJsonObjReq = JsonObjectRequest(Request.Method.GET, matchesOfSeasonUrl.build().toString(), null,
