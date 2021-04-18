@@ -7,4 +7,6 @@
     <string name="table_btn_text">Table</string>
     <string name="predict_btn_text">Predict</string>
     <string name="schedule_btn_text">Schedule</string>
+    <string name="upcoming_matches_header">Upcoming matches</string>
+    <string name="predict_details">Predicting details</string>
 </resources>
