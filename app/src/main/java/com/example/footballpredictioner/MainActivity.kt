@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         checkChosenLeagueButton = findViewById(R.id.check_league_button)
 
         /* In professional distribution such kind of array should be fetched,
-        * for now it is statically initialized with fixed values.  */
+        *  for now it is statically initialized with fixed values.  */
         leagues = arrayOf(
             LeagueModel((-1).toLong(), "Pick a league...", null, null),
 
@@ -55,99 +55,105 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val chosenLeagueSeasons = chosenLeague.seasons
 
             /* Necessary requests for possible updates and then running python script with AI */
-            //TODO We should put code below into new thread to prevent next activity long loading
+            // TODO We should put code below into new thread to prevent next activity long loading
 
-            chosenLeagueSeasons?.forEach { (key,_) ->
-                networkHandler.sendRequestForRounds(key.toString())
-                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
-                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
-            }
+//            chosenLeagueSeasons?.forEach { (key,_) ->
+//                networkHandler.sendRequestForRounds(key.toString())
+//                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
+//                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
+//            }
 
-            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
-            val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
-            val pythonModuleName = "ai_predictioner"
-            val pythonFunctionName = "make_predictions"
+//            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
+//            val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
+//            val pythonModuleName = "ai_predictioner"
+//            val pythonFunctionName = "make_predictions"
 //            val predictions = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable).dropLast(1)
-            val predictions = """2,2,2
-            0,1,1
-            2,2,2
-            0,1,1
-            0,1,0
-            0,0,0
-            2,0,2
-            0,0,0
-            2,2,2
-            0,1,1
-            0,0,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,2,0
-            0,1,0
-            0,1,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,0,0
-            0,0,0
-            0,0,0
-            0,0,0
-            2,2,2
-            2,1,0
-            0,2,0
-            2,0,0
-            0,0,0
-            2,2,2
-            2,2,2
-            2,2,0
-            0,0,0
-            0,0,0
-            0,0,0
-            0,2,2
-            2,1,2
-            0,0,0
-            0,2,0
-            0,0,0
-            0,0,0
-            0,1,0
-            2,0,0
-            0,0,0
-            0,2,0
-            2,0,2
-            2,2,0
-            0,0,0
-            2,0,0
-            2,2,0
-            0,2,0
-            2,0,0
-            0,0,2
-            0,0,0
-            0,0,0
-            0,1,0
-            0,0,0
-            0,1,0
-            0,0,0
-            2,1,0
-            2,0,0
-            2,0,0
-            2,0,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,2,0
-            0,2,0
-            0,0,0
-            2,0,0"""
+//            val predictions = """2,2,2
+//            0,1,1
+//            2,2,2
+//            0,1,1
+//            0,1,0
+//            0,0,0
+//            2,0,2
+//            0,0,0
+//            2,2,2
+//            0,1,1
+//            0,0,0
+//            0,0,0
+//            0,2,0
+//            0,0,0
+//            0,2,0
+//            0,0,0
+//            0,2,0
+//            0,1,0
+//            0,1,0
+//            0,0,0
+//            0,2,0
+//            0,0,0
+//            0,0,0
+//            0,0,0
+//            0,0,0
+//            0,0,0
+//            2,2,2
+//            2,1,0
+//            0,2,0
+//            2,0,0
+//            0,0,0
+//            2,2,2
+//            2,2,2
+//            2,2,0
+//            0,0,0
+//            0,0,0
+//            0,0,0
+//            0,2,2
+//            2,1,2
+//            0,0,0
+//            0,2,0
+//            0,0,0
+//            0,0,0
+//            0,1,0
+//            2,0,0
+//            0,0,0
+//            0,2,0
+//            2,0,2
+//            2,2,0
+//            0,0,0
+//            2,0,0
+//            2,2,0
+//            0,2,0
+//            2,0,0
+//            0,0,2
+//            0,0,0
+//            0,0,0
+//            0,1,0
+//            0,0,0
+//            0,1,0
+//            0,0,0
+//            2,1,0
+//            2,0,0
+//            2,0,0
+//            2,0,0
+//            0,0,0
+//            0,2,0
+//            0,0,0
+//            0,2,0
+//            0,2,0
+//            0,0,0
+//            2,0,0"""
 
             val intent  = Intent(this, ChosenLeagueActivity::class.java)
 
             intent.putExtra("chosenLeagueId", chosenLeague.id)
             intent.putExtra("chosenLeagueName", chosenLeague.name)
             intent.putExtra("chosenLeagueLogoUrl", chosenLeague.logoPath)
-            intent.putExtra("nonPlayedMatchesTable", nonPlayedMatchesTable)
-            intent.putExtra("predictions", predictions)
+
+            val itr = chosenLeague.seasons?.entries?.iterator()
+            val lastSeason = itr?.next()
+            intent.putExtra("lastSeasonId", lastSeason?.key)
+            intent.putExtra("lastSeasonString", lastSeason?.value)
+
+//            intent.putExtra("nonPlayedMatchesTable", nonPlayedMatchesTable)
+//            intent.putExtra("predictions", predictions)
 
             startActivity(intent)
         }
