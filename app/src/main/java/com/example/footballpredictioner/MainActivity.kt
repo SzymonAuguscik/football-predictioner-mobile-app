@@ -11,9 +11,7 @@ import com.example.footballpredictioner.api.TemporaryDataHolder
 import com.example.footballpredictioner.models.LeagueModel
 import kotlin.properties.Delegates
 
-
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
-
 
     private lateinit var networkHandler: NetworkHandler
     private lateinit var leagues: Array<LeagueModel>
@@ -27,7 +25,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         networkHandler = NetworkHandler(this)
         checkChosenLeagueButton = findViewById(R.id.check_league_button)
-
 
         /* In professional distribution such kind of array should be fetched,
         * for now it is statically initialized with fixed values.  */
@@ -51,36 +48,108 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         leaguesSpinner.onItemSelectedListener = this
         leaguesSpinner.adapter = leaguesAdapter
 
-
         checkChosenLeagueButton.setOnClickListener {
 
             val idx = leaguesSpinner.selectedItemPosition
             val chosenLeague = leagues[idx]
             val chosenLeagueSeasons = chosenLeague.seasons
 
-
             /* Necessary requests for possible updates and then running python script with AI */
             //TODO We should put code below into new thread to prevent next activity long loading
 
-//            chosenLeagueSeasons?.forEach { (key,_) ->
-//                networkHandler.sendRequestForRounds(key.toString())
-//                networkHandler.sendRequestForTeams(chosenLeague.name,key.toString())
-//                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
-//
-//                val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
-//                val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
-//                val pythonModuleName = "ai_predictioner"
-//                val pythonFunctionName = "make_predictions"
-//                val pythonResult = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable)
-//                println(pythonResult)
-//            }
+            chosenLeagueSeasons?.forEach { (key,_) ->
+                networkHandler.sendRequestForRounds(key.toString())
+                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
+                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
+            }
 
-            val intent  = Intent(this,ChosenLeagueActivity::class.java)
+            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
+            val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
+            val pythonModuleName = "ai_predictioner"
+            val pythonFunctionName = "make_predictions"
+//            val predictions = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable).dropLast(1)
+            val predictions = """2,2,2
+            0,1,1
+            2,2,2
+            0,1,1
+            0,1,0
+            0,0,0
+            2,0,2
+            0,0,0
+            2,2,2
+            0,1,1
+            0,0,0
+            0,0,0
+            0,2,0
+            0,0,0
+            0,2,0
+            0,0,0
+            0,2,0
+            0,1,0
+            0,1,0
+            0,0,0
+            0,2,0
+            0,0,0
+            0,0,0
+            0,0,0
+            0,0,0
+            0,0,0
+            2,2,2
+            2,1,0
+            0,2,0
+            2,0,0
+            0,0,0
+            2,2,2
+            2,2,2
+            2,2,0
+            0,0,0
+            0,0,0
+            0,0,0
+            0,2,2
+            2,1,2
+            0,0,0
+            0,2,0
+            0,0,0
+            0,0,0
+            0,1,0
+            2,0,0
+            0,0,0
+            0,2,0
+            2,0,2
+            2,2,0
+            0,0,0
+            2,0,0
+            2,2,0
+            0,2,0
+            2,0,0
+            0,0,2
+            0,0,0
+            0,0,0
+            0,1,0
+            0,0,0
+            0,1,0
+            0,0,0
+            2,1,0
+            2,0,0
+            2,0,0
+            2,0,0
+            0,0,0
+            0,2,0
+            0,0,0
+            0,2,0
+            0,2,0
+            0,0,0
+            2,0,0"""
+
+            val intent  = Intent(this, ChosenLeagueActivity::class.java)
+
             intent.putExtra("chosenLeagueId", chosenLeague.id)
             intent.putExtra("chosenLeagueName", chosenLeague.name)
             intent.putExtra("chosenLeagueLogoUrl", chosenLeague.logoPath)
-            startActivity(intent)
+            intent.putExtra("nonPlayedMatchesTable", nonPlayedMatchesTable)
+            intent.putExtra("predictions", predictions)
 
+            startActivity(intent)
         }
     }
 

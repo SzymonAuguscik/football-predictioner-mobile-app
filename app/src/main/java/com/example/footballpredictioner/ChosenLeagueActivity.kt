@@ -31,9 +31,10 @@ class ChosenLeagueActivity : AppCompatActivity() {
 
 
         /* read intent from MainActivity */
-        val chosenLeagueId = intent.getLongExtra("chosenLeagueId",-1)
+        val chosenLeagueId = intent.getLongExtra("chosenLeagueId", -1)
         val chosenLeagueName = intent.getStringExtra("chosenLeagueName")
         val chosenLeagueLogoUrl = intent.getStringExtra("chosenLeagueLogoUrl")
+        val predictions = intent.getStringExtra("predictions")
 
         /* Load image by url using Picasso lib*/
         chosenLeagueLogo = findViewById(R.id.chosen_league_logo)
@@ -47,6 +48,8 @@ class ChosenLeagueActivity : AppCompatActivity() {
         }
         predictButton.setOnClickListener {
             val predictIntent  = Intent(this, PredictActivity::class.java)
+            predictIntent.putExtra("predictions", predictions)
+            
             startActivity(predictIntent)
         }
         scheduleButton.setOnClickListener {

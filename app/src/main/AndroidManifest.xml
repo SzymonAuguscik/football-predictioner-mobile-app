@@ -14,19 +14,24 @@
         android:theme="@style/Theme.FootballPredictioner">
 
         <activity android:name=".ScheduleActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ChosenLeagueActivity"/>
 
         <activity android:name=".PredictActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ChosenLeagueActivity"/>
 
         <activity android:name=".TableActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ChosenLeagueActivity"/>
 
         <activity
             android:name=".ChosenLeagueActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
