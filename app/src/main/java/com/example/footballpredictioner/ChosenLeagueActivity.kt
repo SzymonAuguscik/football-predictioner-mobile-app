@@ -49,7 +49,7 @@ class ChosenLeagueActivity : AppCompatActivity() {
         predictButton.setOnClickListener {
             val predictIntent  = Intent(this, PredictActivity::class.java)
             predictIntent.putExtra("predictions", predictions)
-            
+            predictIntent.putExtra("logoUrl", chosenLeagueLogoUrl)
             startActivity(predictIntent)
         }
         scheduleButton.setOnClickListener {
