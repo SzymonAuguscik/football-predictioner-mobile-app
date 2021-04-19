@@ -272,6 +272,20 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         return getSelectAsText(query)
     }
 
+    //TODO: refactor!!!
+    fun getTeamsFromSeason(seasonID: String?) : String {
+        val query = "SELECT $TEAM_ID, $TEAM_NAME FROM $TEAMS_TABLE WHERE $SEASON_ID = $seasonID"
+
+        return getSelectAsText(query)
+    }
+
+    fun getDateOfMatch(firstTeam: String, secondTeam: String) : String {
+        val query = "SELECT $DATE FROM $MATCHES_TABLE WHERE $LOCAL_TEAM_ID = $firstTeam AND " +
+                    "$VISITOR_TEAM_ID = $secondTeam AND $DATE > DATE('now')"
+
+        return getSelectAsText(query)
+    }
+
     @SuppressLint("Recycle")
     fun getTeamsFromGivenSeason(seasonId:Int, league:String):ArrayList<TeamModel>{
 
@@ -304,5 +318,4 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
 
     }
-
 }

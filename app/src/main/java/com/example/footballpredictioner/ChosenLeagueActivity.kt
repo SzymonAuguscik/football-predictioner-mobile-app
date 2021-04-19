@@ -31,10 +31,17 @@ class ChosenLeagueActivity : AppCompatActivity() {
         val chosenLeagueId = intent.getLongExtra("chosenLeagueId", -1)
         val chosenLeagueName = intent.getStringExtra("chosenLeagueName")
         val chosenLeagueLogoUrl = intent.getStringExtra("chosenLeagueLogoUrl")
+
+        //TODO: refactor this!!!
+        val playedMatchesTable = intent.getStringExtra("playedMatchesTable")
+        val nonPlayedMatchesTable = intent.getStringExtra("nonPlayedMatchesTable")
+        val predictions = intent.getStringExtra("predictions")
+
+        val currentSeason = intent.getIntExtra("currentSeason", -1)
+      
         val chosenLeagueLastSeasonId = intent.getIntExtra("lastSeasonId",-1)
         val chosenLeagueLastSeasonString = intent.getStringExtra("lastSeasonString")
         val predictions = intent.getStringExtra("predictions")
-
 
         /* Load image by url using Picasso lib*/
         chosenLeagueLogo = findViewById(R.id.chosen_league_logo)
@@ -52,8 +59,10 @@ class ChosenLeagueActivity : AppCompatActivity() {
         }
         predictButton.setOnClickListener {
             val predictIntent  = Intent(this, PredictActivity::class.java)
+            predictIntent.putExtra("matches", nonPlayedMatchesTable)
             predictIntent.putExtra("predictions", predictions)
             predictIntent.putExtra("logoUrl", chosenLeagueLogoUrl)
+            predictIntent.putExtra("currentSeason", currentSeason)
             startActivity(predictIntent)
         }
         scheduleButton.setOnClickListener {
