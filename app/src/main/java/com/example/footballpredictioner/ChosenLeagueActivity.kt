@@ -1,10 +1,7 @@
 package com.example.footballpredictioner
 
-import android.annotation.SuppressLint
+
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -35,20 +32,29 @@ class ChosenLeagueActivity : AppCompatActivity() {
         val chosenLeagueName = intent.getStringExtra("chosenLeagueName")
         val chosenLeagueLogoUrl = intent.getStringExtra("chosenLeagueLogoUrl")
 
+        //TODO: refactor this!!!
         val playedMatchesTable = intent.getStringExtra("playedMatchesTable")
         val nonPlayedMatchesTable = intent.getStringExtra("nonPlayedMatchesTable")
         val predictions = intent.getStringExtra("predictions")
 
         val currentSeason = intent.getIntExtra("currentSeason", -1)
+      
+        val chosenLeagueLastSeasonId = intent.getIntExtra("lastSeasonId",-1)
+        val chosenLeagueLastSeasonString = intent.getStringExtra("lastSeasonString")
+        val predictions = intent.getStringExtra("predictions")
 
         /* Load image by url using Picasso lib*/
         chosenLeagueLogo = findViewById(R.id.chosen_league_logo)
         Picasso.get().load(chosenLeagueLogoUrl).into(chosenLeagueLogo)
 
-        Toast.makeText(this,"$chosenLeagueId $chosenLeagueName $chosenLeagueLogoUrl",Toast.LENGTH_SHORT).show()
 
         tableButton.setOnClickListener {
             val tableIntent  = Intent(this, TableActivity::class.java)
+            tableIntent.putExtra("chosenLeagueId", chosenLeagueId)
+            tableIntent.putExtra("chosenLeagueName", chosenLeagueName)
+            tableIntent.putExtra("chosenLeagueLogoUrl", chosenLeagueLogoUrl)
+            tableIntent.putExtra("chosenLeagueLastSeasonId", chosenLeagueLastSeasonId)
+            tableIntent.putExtra("chosenLeagueLastSeasonString", chosenLeagueLastSeasonString)
             startActivity(tableIntent)
         }
         predictButton.setOnClickListener {

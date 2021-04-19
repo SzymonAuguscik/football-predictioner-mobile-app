@@ -9,4 +9,11 @@
     <string name="schedule_btn_text">Schedule</string>
     <string name="upcoming_matches_header">Upcoming matches</string>
     <string name="predict_details">Predicting details</string>
+    <string name="regular_season_tag">Regular Season</string>
+    <string name="position_in_league">nr</string>
+    <string name="team_name">TeamName</string>
+    <string name="points_in_league">Points</string>
+    <string name="basic_team_stats">Stats</string>
+    <string name="curr_season_year">Current Season</string>
+    <string name="stats_desc">MP • W • D • L</string>
 </resources>

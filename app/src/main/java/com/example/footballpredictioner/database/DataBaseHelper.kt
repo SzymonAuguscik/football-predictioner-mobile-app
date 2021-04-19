@@ -272,6 +272,7 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         return getSelectAsText(query)
     }
 
+    //TODO: refactor!!!
     fun getTeamsFromSeason(seasonID: String?) : String {
         val query = "SELECT $TEAM_ID, $TEAM_NAME FROM $TEAMS_TABLE WHERE $SEASON_ID = $seasonID"
 
@@ -283,5 +284,38 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
                     "$VISITOR_TEAM_ID = $secondTeam AND $DATE > DATE('now')"
 
         return getSelectAsText(query)
+    }
+
+    @SuppressLint("Recycle")
+    fun getTeamsFromGivenSeason(seasonId:Int, league:String):ArrayList<TeamModel>{
+
+        val resultArray = arrayListOf<TeamModel>()
+
+        val query = "SELECT * FROM $TEAMS_TABLE WHERE $SEASON_ID = $seasonId"
+
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor != null && cursor.count > 0 ) {
+            while(cursor.moveToNext()) {
+                val teamId = cursor.getLong(cursor.getColumnIndex(TEAM_ID))
+                val name = cursor.getString(cursor.getColumnIndex(TEAM_NAME))
+                val logoPath = cursor.getString(cursor.getColumnIndex(LOGO_URL))
+                val season = cursor.getString(cursor.getColumnIndex(SEASON_ID))
+                val wins = cursor.getInt(cursor.getColumnIndex(WINS))
+                val loses = cursor.getInt(cursor.getColumnIndex(LOSES))
+                val draws = cursor.getInt(cursor.getColumnIndex(DRAWS))
+                val team = TeamModel(teamId, name, logoPath, league, season = season, wins = wins, loses = loses, draws = draws)
+                resultArray.add(team)
+            }
+        }
+
+        db.close()
+
+        return resultArray
+
+
+
+
     }
 }

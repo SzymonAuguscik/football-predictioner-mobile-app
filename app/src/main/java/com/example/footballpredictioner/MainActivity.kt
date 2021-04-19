@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         checkChosenLeagueButton = findViewById(R.id.check_league_button)
 
         /* In professional distribution such kind of array should be fetched,
-        * for now it is statically initialized with fixed values.  */
+        *  for now it is statically initialized with fixed values.  */
         leagues = arrayOf(
             LeagueModel((-1).toLong(), "Pick a league...", null, null),
 
@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val chosenLeagueSeasons = chosenLeague.seasons
 
             /* Necessary requests for possible updates and then running python script with AI */
-            //TODO We should put code below into new thread to prevent next activity long loading
+            // TODO We should put code below into new thread to prevent next activity long loading
 
 //            chosenLeagueSeasons?.forEach { (key,_) ->
 //                networkHandler.sendRequestForRounds(key.toString())
@@ -142,15 +142,23 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 2,0,0"""
 
             val currentSeason = chosenLeague.seasons?.filter { it.value == "2020/2021" }?.keys?.first()
+          
             val intent  = Intent(this, ChosenLeagueActivity::class.java)
 
             intent.putExtra("chosenLeagueId", chosenLeague.id)
             intent.putExtra("chosenLeagueName", chosenLeague.name)
             intent.putExtra("chosenLeagueLogoUrl", chosenLeague.logoPath)
+          
+            //TODO: refactor!!!
             intent.putExtra("playedMatchesTable", playedMatchesTable)
             intent.putExtra("nonPlayedMatchesTable", nonPlayedMatchesTable)
             intent.putExtra("predictions", predictions)
             intent.putExtra("currentSeason", currentSeason)
+
+            val itr = chosenLeague.seasons?.entries?.iterator()
+            val lastSeason = itr?.next()
+            intent.putExtra("lastSeasonId", lastSeason?.key)
+            intent.putExtra("lastSeasonString", lastSeason?.value)
 
             startActivity(intent)
         }
