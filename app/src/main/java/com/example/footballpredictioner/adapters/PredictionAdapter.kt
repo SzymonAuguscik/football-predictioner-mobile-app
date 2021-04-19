@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.footballpredictioner.R
 import com.example.footballpredictioner.models.SinglePredictionRowModel
 
-class PredictionAdapter(private val dataSet: Array<SinglePredictionRowModel>, var context: Context): RecyclerView.Adapter<PredictionAdapter.ViewHolder>() {
+class PredictionAdapter(var dataSet: Array<SinglePredictionRowModel>, var context: Context): RecyclerView.Adapter<PredictionAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val dateTextView: TextView
         val teamsTextView: TextView

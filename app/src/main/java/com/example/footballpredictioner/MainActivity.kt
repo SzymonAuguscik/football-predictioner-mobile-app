@@ -57,11 +57,11 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             /* Necessary requests for possible updates and then running python script with AI */
             //TODO We should put code below into new thread to prevent next activity long loading
 
-            chosenLeagueSeasons?.forEach { (key,_) ->
-                networkHandler.sendRequestForRounds(key.toString())
-                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
-                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
-            }
+//            chosenLeagueSeasons?.forEach { (key,_) ->
+//                networkHandler.sendRequestForRounds(key.toString())
+//                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
+//                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
+//            }
 
             val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
             val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
@@ -69,85 +69,88 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val pythonFunctionName = "make_predictions"
 //            val predictions = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable).dropLast(1)
             val predictions = """2,2,2
-            0,1,1
-            2,2,2
-            0,1,1
-            0,1,0
-            0,0,0
-            2,0,2
-            0,0,0
-            2,2,2
-            0,1,1
-            0,0,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,2,0
-            0,1,0
-            0,1,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,0,0
-            0,0,0
-            0,0,0
-            0,0,0
-            2,2,2
-            2,1,0
-            0,2,0
-            2,0,0
-            0,0,0
-            2,2,2
-            2,2,2
-            2,2,0
-            0,0,0
-            0,0,0
-            0,0,0
-            0,2,2
-            2,1,2
-            0,0,0
-            0,2,0
-            0,0,0
-            0,0,0
-            0,1,0
-            2,0,0
-            0,0,0
-            0,2,0
-            2,0,2
-            2,2,0
-            0,0,0
-            2,0,0
-            2,2,0
-            0,2,0
-            2,0,0
-            0,0,2
-            0,0,0
-            0,0,0
-            0,1,0
-            0,0,0
-            0,1,0
-            0,0,0
-            2,1,0
-            2,0,0
-            2,0,0
-            2,0,0
-            0,0,0
-            0,2,0
-            0,0,0
-            0,2,0
-            0,2,0
-            0,0,0
-            2,0,0"""
+0,1,1
+2,2,2
+0,1,1
+0,1,0
+0,0,0
+2,0,2
+0,0,0
+2,2,2
+0,1,1
+0,0,0
+0,0,0
+0,2,0
+0,0,0
+0,2,0
+0,0,0
+0,2,0
+0,1,0
+0,1,0
+0,0,0
+0,2,0
+0,0,0
+0,0,0
+0,0,0
+0,0,0
+0,0,0
+2,2,2
+2,1,0
+0,2,0
+2,0,0
+0,0,0
+2,2,2
+2,2,2
+2,2,0
+0,0,0
+0,0,0
+0,0,0
+0,2,2
+2,1,2
+0,0,0
+0,2,0
+0,0,0
+0,0,0
+0,1,0
+2,0,0
+0,0,0
+0,2,0
+2,0,2
+2,2,0
+0,0,0
+2,0,0
+2,2,0
+0,2,0
+2,0,0
+0,0,2
+0,0,0
+0,0,0
+0,1,0
+0,0,0
+0,1,0
+0,0,0
+2,1,0
+2,0,0
+2,0,0
+2,0,0
+0,0,0
+0,2,0
+0,0,0
+0,2,0
+0,2,0
+0,0,0
+2,0,0"""
 
+            val currentSeason = chosenLeague.seasons?.filter { it.value == "2020/2021" }?.keys?.first()
             val intent  = Intent(this, ChosenLeagueActivity::class.java)
 
             intent.putExtra("chosenLeagueId", chosenLeague.id)
             intent.putExtra("chosenLeagueName", chosenLeague.name)
             intent.putExtra("chosenLeagueLogoUrl", chosenLeague.logoPath)
+            intent.putExtra("playedMatchesTable", playedMatchesTable)
             intent.putExtra("nonPlayedMatchesTable", nonPlayedMatchesTable)
             intent.putExtra("predictions", predictions)
+            intent.putExtra("currentSeason", currentSeason)
 
             startActivity(intent)
         }
