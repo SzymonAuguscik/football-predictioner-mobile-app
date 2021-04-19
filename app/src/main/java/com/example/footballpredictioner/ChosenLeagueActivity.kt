@@ -4,10 +4,8 @@ package com.example.footballpredictioner
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import com.squareup.picasso.Picasso
 
 class ChosenLeagueActivity : AppCompatActivity() {
@@ -26,19 +24,16 @@ class ChosenLeagueActivity : AppCompatActivity() {
         predictButton = findViewById(R.id.predict_button)
         scheduleButton = findViewById(R.id.schedule_button)
 
-
         /* read intent from MainActivity */
         val chosenLeagueId = intent.getLongExtra("chosenLeagueId", -1)
         val chosenLeagueName = intent.getStringExtra("chosenLeagueName")
         val chosenLeagueLogoUrl = intent.getStringExtra("chosenLeagueLogoUrl")
 
-
         val nonPlayedMatchesTable = intent.getStringExtra("nonPlayedMatchesTable")
-
+        val predictions = intent.getStringExtra("predictions")
 
         val chosenLeagueLastSeasonId = intent.getIntExtra("lastSeasonId",-1)
         val chosenLeagueLastSeasonString = intent.getStringExtra("lastSeasonString")
-        val predictions = intent.getStringExtra("predictions")
 
         /* Load image by url using Picasso lib*/
         chosenLeagueLogo = findViewById(R.id.chosen_league_logo)
@@ -46,7 +41,7 @@ class ChosenLeagueActivity : AppCompatActivity() {
 
 
         tableButton.setOnClickListener {
-            val tableIntent  = Intent(this, TableActivity::class.java)
+            val tableIntent = Intent(this, TableActivity::class.java)
             tableIntent.putExtra("chosenLeagueId", chosenLeagueId)
             tableIntent.putExtra("chosenLeagueName", chosenLeagueName)
             tableIntent.putExtra("chosenLeagueLogoUrl", chosenLeagueLogoUrl)
@@ -56,7 +51,7 @@ class ChosenLeagueActivity : AppCompatActivity() {
         }
 
         predictButton.setOnClickListener {
-            val predictIntent  = Intent(this, PredictActivity::class.java)
+            val predictIntent = Intent(this, PredictActivity::class.java)
             predictIntent.putExtra("matches", nonPlayedMatchesTable)
             predictIntent.putExtra("predictions", predictions)
             predictIntent.putExtra("logoUrl", chosenLeagueLogoUrl)
@@ -65,7 +60,7 @@ class ChosenLeagueActivity : AppCompatActivity() {
         }
 
         scheduleButton.setOnClickListener {
-            val scheduleIntent  = Intent(this, ScheduleActivity::class.java)
+            val scheduleIntent = Intent(this, ScheduleActivity::class.java)
             startActivity(scheduleIntent)
         }
 

@@ -358,6 +358,11 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
         db.close()
         return result
+    }
 
+    fun getLogoById(teamID: String) : String {
+        val query = "SELECT $LOGO_URL FROM $TEAMS_TABLE WHERE $TEAM_ID = $teamID"
+
+        return getSelectAsText(query)
     }
 }

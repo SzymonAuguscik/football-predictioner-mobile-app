@@ -21,4 +21,10 @@
     <string name="match_result">MatchResult</string>
     <string name="local_team">LocalTeam</string>
     <string name="visitor_team">VisitorTeam</string>
+    <string name="first_predictor_header">First predictor</string>
+    <string name="second_predictor_header">Second predictor</string>
+    <string name="third_predictor_header">Third predictor</string>
+    <string name="first_predictor_description">That predictor seems to be very straightforward. He believes that teams always fight for victory and a draw between them can happen hardly ever, so he usually predicts no match ties. His best skills rely on his contacts\' network - every connections count in the end.</string>
+    <string name="second_predictor_description">That predictor can provide vast support in predicting scores. His secret is a small trick changing the angle of the problem. He also uses machines to check whether he\'s right. His methods can be seen as more sophisticated than his colleagues but the truth is that all he does is drawing fancy lines.</string>
+    <string name="third_predictor_description">That predictor is actually a group of predictors. Each one of them tries to fit the problem the best way they know and remain independent at the same time. At the end of the process of gathering data, they vote to choose the best option. Someone could say that there is a huge chaos in that but most of participants see only advantages of this madness.</string>
 </resources>

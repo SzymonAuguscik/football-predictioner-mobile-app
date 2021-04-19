@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.footballpredictioner.R
 import com.example.footballpredictioner.models.SinglePredictionRowModel
+import com.squareup.picasso.Picasso
 
 class PredictionAdapter(var dataSet: Array<SinglePredictionRowModel>, var context: Context): RecyclerView.Adapter<PredictionAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -16,6 +18,8 @@ class PredictionAdapter(var dataSet: Array<SinglePredictionRowModel>, var contex
         val firstPredictionTextView: TextView
         val secondPredictionTextView: TextView
         val thirdPredictionTextView: TextView
+        val homeTeamLogo: ImageView
+        val awayTeamLogo: ImageView
 
         init {
             dateTextView = view.findViewById(R.id.date)
@@ -23,6 +27,8 @@ class PredictionAdapter(var dataSet: Array<SinglePredictionRowModel>, var contex
             firstPredictionTextView = view.findViewById(R.id.firstPrediction)
             secondPredictionTextView = view.findViewById(R.id.secondPrediction)
             thirdPredictionTextView = view.findViewById(R.id.thirdPrediction)
+            homeTeamLogo = view.findViewById(R.id.homeTeamLogo)
+            awayTeamLogo = view.findViewById(R.id.awayTeamLogo)
         }
     }
 
@@ -41,6 +47,8 @@ class PredictionAdapter(var dataSet: Array<SinglePredictionRowModel>, var contex
         viewHolder.firstPredictionTextView.text = singlePredictionRow.prediction1
         viewHolder.secondPredictionTextView.text = singlePredictionRow.prediction2
         viewHolder.thirdPredictionTextView.text = singlePredictionRow.prediction3
+        Picasso.get().load(singlePredictionRow.url1).into(viewHolder.homeTeamLogo)
+        Picasso.get().load(singlePredictionRow.url2).into(viewHolder.awayTeamLogo)
     }
 
     override fun getItemCount() = dataSet.size
