@@ -272,7 +272,7 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         return getSelectAsText(query)
     }
 
-    //TODO: refactor!!!
+
     fun getTeamsFromSeason(seasonID: String?) : String {
         val query = "SELECT $TEAM_ID, $TEAM_NAME FROM $TEAMS_TABLE WHERE $SEASON_ID = $seasonID"
 
@@ -314,8 +314,13 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
         return resultArray
 
+    }
+
+    fun getTeamLastFiveMatches(teamId:Long): ArrayList<MatchModel> {
+
+        val resultList = arrayListOf<MatchModel>()
 
 
-
+        return resultList
     }
 }

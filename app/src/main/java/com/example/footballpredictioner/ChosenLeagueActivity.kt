@@ -32,13 +32,10 @@ class ChosenLeagueActivity : AppCompatActivity() {
         val chosenLeagueName = intent.getStringExtra("chosenLeagueName")
         val chosenLeagueLogoUrl = intent.getStringExtra("chosenLeagueLogoUrl")
 
-        //TODO: refactor this!!!
-        val playedMatchesTable = intent.getStringExtra("playedMatchesTable")
-        val nonPlayedMatchesTable = intent.getStringExtra("nonPlayedMatchesTable")
-        val predictions = intent.getStringExtra("predictions")
 
-        val currentSeason = intent.getIntExtra("currentSeason", -1)
-      
+        val nonPlayedMatchesTable = intent.getStringExtra("nonPlayedMatchesTable")
+
+
         val chosenLeagueLastSeasonId = intent.getIntExtra("lastSeasonId",-1)
         val chosenLeagueLastSeasonString = intent.getStringExtra("lastSeasonString")
         val predictions = intent.getStringExtra("predictions")
@@ -57,14 +54,16 @@ class ChosenLeagueActivity : AppCompatActivity() {
             tableIntent.putExtra("chosenLeagueLastSeasonString", chosenLeagueLastSeasonString)
             startActivity(tableIntent)
         }
+
         predictButton.setOnClickListener {
             val predictIntent  = Intent(this, PredictActivity::class.java)
             predictIntent.putExtra("matches", nonPlayedMatchesTable)
             predictIntent.putExtra("predictions", predictions)
             predictIntent.putExtra("logoUrl", chosenLeagueLogoUrl)
-            predictIntent.putExtra("currentSeason", currentSeason)
+            predictIntent.putExtra("currentSeason", chosenLeagueLastSeasonId)
             startActivity(predictIntent)
         }
+
         scheduleButton.setOnClickListener {
             val scheduleIntent  = Intent(this, ScheduleActivity::class.java)
             startActivity(scheduleIntent)

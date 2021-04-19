@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_blue"
+    app:layout_constraintCircleRadius="10sp"
     tools:context=".PredictActivity">
 
     <ImageView
@@ -52,6 +53,7 @@
         android:layout_marginRight="111dp"
         android:layout_marginBottom="440dp"
         android:text="@string/predict_details"
+        app:backgroundTint="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

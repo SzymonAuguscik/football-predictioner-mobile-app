@@ -63,10 +63,10 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 //                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
 //            }
 
-            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
+//            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
             val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
-            val pythonModuleName = "ai_predictioner"
-            val pythonFunctionName = "make_predictions"
+//            val pythonModuleName = "ai_predictioner"
+//            val pythonFunctionName = "make_predictions"
 //            val predictions = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable).dropLast(1)
             val predictions = """2,2,2
 0,1,1
@@ -141,22 +141,19 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 0,0,0
 2,0,0"""
 
-            val currentSeason = chosenLeague.seasons?.filter { it.value == "2020/2021" }?.keys?.first()
-          
+            val itr = chosenLeague.seasons?.entries?.iterator()
+            val lastSeason = itr?.next()
             val intent  = Intent(this, ChosenLeagueActivity::class.java)
 
             intent.putExtra("chosenLeagueId", chosenLeague.id)
             intent.putExtra("chosenLeagueName", chosenLeague.name)
             intent.putExtra("chosenLeagueLogoUrl", chosenLeague.logoPath)
           
-            //TODO: refactor!!!
-            intent.putExtra("playedMatchesTable", playedMatchesTable)
+
             intent.putExtra("nonPlayedMatchesTable", nonPlayedMatchesTable)
             intent.putExtra("predictions", predictions)
-            intent.putExtra("currentSeason", currentSeason)
 
-            val itr = chosenLeague.seasons?.entries?.iterator()
-            val lastSeason = itr?.next()
+
             intent.putExtra("lastSeasonId", lastSeason?.key)
             intent.putExtra("lastSeasonString", lastSeason?.value)
 

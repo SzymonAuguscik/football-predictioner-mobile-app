@@ -44,44 +44,35 @@
         app:layout_constraintStart_toEndOf="@+id/reagular_season_text"
         app:layout_constraintTop_toBottomOf="@+id/league_table_logo" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="250dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+    <TextView
+        android:id="@+id/stats_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:layout_marginRight="52dp"
+        android:text="@string/stats_desc"
+        android:textColor="@color/black"
+        android:textColorHighlight="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/league_teams_recycler"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_season_year"
+        app:layout_constraintVertical_bias="0.752" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/league_teams_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.589"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/reagular_season_text">
-
-        <TextView
-            android:id="@+id/stats_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/league_teams_recycler"
-            android:layout_alignLeft="@+id/league_teams_recycler"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginStart="252dp"
-            android:layout_marginLeft="252dp"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="28dp"
-            android:layout_marginRight="28dp"
-            android:text="@string/stats_desc"
-            android:textColor="@color/black"
-            android:textColorHighlight="#FFFFFF"
-            android:textStyle="bold" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/league_teams_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="32dp" />
-
-    </RelativeLayout>
+        app:layout_constraintTop_toBottomOf="@+id/current_season_year"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
