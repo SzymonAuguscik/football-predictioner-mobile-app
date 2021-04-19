@@ -63,10 +63,6 @@ class TableActivity : AppCompatActivity(), TableAdapter.OnItemClickListener{
         intent.putExtra("teamLogoUrl",team.logoPath)
         intent.putExtra("teamCurrSeasonId",team.season)
 
-//        val chosenTeamLast5Matches = TemporaryDataHolder.dataBaseHelper.getTeamLastFiveMatches()
-
-
-
         startActivity(intent)
     }
 

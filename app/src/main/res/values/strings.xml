@@ -16,4 +16,9 @@
     <string name="basic_team_stats">Stats</string>
     <string name="curr_season_year">Current Season</string>
     <string name="stats_desc">MP • W • D • L</string>
+    <string name="chosen_team_name">Chosen Team Name</string>
+    <string name="chosen_team_logo">Chosen Team Logo</string>
+    <string name="match_result">MatchResult</string>
+    <string name="local_team">LocalTeam</string>
+    <string name="visitor_team">VisitorTeam</string>
 </resources>

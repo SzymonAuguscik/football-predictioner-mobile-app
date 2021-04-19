@@ -28,7 +28,7 @@ class PredictionAdapter(var dataSet: Array<SinglePredictionRowModel>, var contex
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.single_prediction, viewGroup, false)
+            .inflate(R.layout.single_prediction_row, viewGroup, false)
 
         return ViewHolder(view)
     }

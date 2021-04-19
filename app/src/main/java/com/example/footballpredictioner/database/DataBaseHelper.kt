@@ -318,9 +318,46 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
     fun getTeamLastFiveMatches(teamId:Long): ArrayList<MatchModel> {
 
-        val resultList = arrayListOf<MatchModel>()
+        val resultArray = arrayListOf<MatchModel>()
+        val query = "SELECT * FROM $MATCHES_TABLE WHERE DATE < (SELECT DATE('now')) AND ($LOCAL_TEAM_ID = $teamId OR $VISITOR_TEAM_ID = $teamId)  ORDER BY DATE DESC LIMIT 5"
+
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor != null && cursor.count > 0 ) {
+            while(cursor.moveToNext()) {
+                val matchId = cursor.getLong(cursor.getColumnIndex(MATCH_ID))
+                val localTeamId = cursor.getLong(cursor.getColumnIndex(LOCAL_TEAM_ID))
+                val visitorTeamId = cursor.getLong(cursor.getColumnIndex(VISITOR_TEAM_ID))
+                val localTeamScore = cursor.getInt(cursor.getColumnIndex(LOCAL_TEAM_SCORE))
+                val visitorTeamScore = cursor.getInt(cursor.getColumnIndex(VISITOR_TEAM_SCORE))
+                val matchData = cursor.getString(cursor.getColumnIndex(DATE))
+
+                val match = MatchModel(matchId,null,localTeamId,visitorTeamId,localTeamScore,visitorTeamScore,matchData)
+                resultArray.add(match)
+            }
+        }
+        db.close()
+        return resultArray
+    }
 
 
-        return resultList
+    fun getTeamNameById(teamId:Long): String{
+
+        var result = ""
+        val query = "SELECT $TEAM_NAME FROM $TEAMS_TABLE WHERE $TEAM_ID = $teamId"
+
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(query, null)
+
+        if (cursor != null && cursor.count > 0 ) {
+            cursor.moveToNext()
+            result =  cursor.getString(cursor.getColumnIndex(TEAM_NAME))
+
+        }
+
+        db.close()
+        return result
+
     }
 }

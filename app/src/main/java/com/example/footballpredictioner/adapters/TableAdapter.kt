@@ -40,7 +40,7 @@ class TableAdapter(var dataSet: ArrayList<TeamModel>,
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context)
-            .inflate(R.layout.single_team, viewGroup, false)
+            .inflate(R.layout.single_team_row, viewGroup, false)
 
         return ViewHolder(view)
     }
