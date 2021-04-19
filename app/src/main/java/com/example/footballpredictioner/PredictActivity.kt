@@ -1,5 +1,6 @@
 package com.example.footballpredictioner
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -39,6 +40,11 @@ class PredictActivity : AppCompatActivity() {
 
         adapter.dataSet = mapMatches(currentSeason, matches, predictions)
         adapter.notifyDataSetChanged()
+
+        predictionButton.setOnClickListener {
+            val intent = Intent(this, PredictingDetailsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun createMapToMatchesTable(currentSeason: Int) : MutableMap<String, String> {
@@ -71,9 +77,12 @@ class PredictActivity : AppCompatActivity() {
                 val secondPrediction = "Second prediction: %s".format(predictionLabels[predictions?.get(1)])
                 val thirdPrediction = "Third prediction: %s".format(predictionLabels[predictions?.get(2)])
 
+                val homeTeamUrl = TemporaryDataHolder.dataBaseHelper.getLogoById(teams[0]).dropLast(1)
+                val awayTeamUrl = TemporaryDataHolder.dataBaseHelper.getLogoById(teams[1]).dropLast(1)
+
                 if (teams[0] in teamsMap) {
                     val singlePrediction = SinglePredictionRowModel(date, teamsMap[teams[0]], teamsMap[teams[1]],
-                        firstPrediction, secondPrediction, thirdPrediction)
+                        firstPrediction, secondPrediction, thirdPrediction, homeTeamUrl, awayTeamUrl)
 
                     predictionRecords.add(singlePrediction)
                 }
