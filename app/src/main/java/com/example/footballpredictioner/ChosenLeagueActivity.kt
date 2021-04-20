@@ -29,6 +29,7 @@ class ChosenLeagueActivity : AppCompatActivity() {
         val chosenLeagueName = intent.getStringExtra("chosenLeagueName")
         val chosenLeagueLogoUrl = intent.getStringExtra("chosenLeagueLogoUrl")
 
+        val playedMatchesTable = intent.getStringExtra("playedMatchesTable")
         val nonPlayedMatchesTable = intent.getStringExtra("nonPlayedMatchesTable")
         val predictions = intent.getStringExtra("predictions")
 
@@ -55,16 +56,16 @@ class ChosenLeagueActivity : AppCompatActivity() {
             predictIntent.putExtra("matches", nonPlayedMatchesTable)
             predictIntent.putExtra("predictions", predictions)
             predictIntent.putExtra("logoUrl", chosenLeagueLogoUrl)
-            predictIntent.putExtra("currentSeason", chosenLeagueLastSeasonId)
+            predictIntent.putExtra("currentSeason", chosenLeagueLastSeasonId.toString())
             startActivity(predictIntent)
         }
 
         scheduleButton.setOnClickListener {
             val scheduleIntent = Intent(this, ScheduleActivity::class.java)
+            scheduleIntent.putExtra("logoUrl", chosenLeagueLogoUrl)
+            scheduleIntent.putExtra("currentSeason", chosenLeagueLastSeasonId.toString())
             startActivity(scheduleIntent)
         }
-
-
     }
 }
 

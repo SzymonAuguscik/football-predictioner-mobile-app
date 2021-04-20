@@ -57,13 +57,13 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             /* Necessary requests for possible updates and then running python script with AI */
             // TODO We should put code below into new thread to prevent next activity long loading
 
-//            chosenLeagueSeasons?.forEach { (key,_) ->
-//                networkHandler.sendRequestForRounds(key.toString())
-//                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
-//                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
-//            }
+            chosenLeagueSeasons?.forEach { (key,_) ->
+                networkHandler.sendRequestForRounds(key.toString())
+                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
+                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
+            }
 
-//            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
+            val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
             val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
 //            val pythonModuleName = "ai_predictioner"
 //            val pythonFunctionName = "make_predictions"
@@ -148,16 +148,15 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             intent.putExtra("chosenLeagueId", chosenLeague.id)
             intent.putExtra("chosenLeagueName", chosenLeague.name)
             intent.putExtra("chosenLeagueLogoUrl", chosenLeague.logoPath)
-          
 
+            intent.putExtra("playedMatchesTable", playedMatchesTable)
             intent.putExtra("nonPlayedMatchesTable", nonPlayedMatchesTable)
             intent.putExtra("predictions", predictions)
-
 
             intent.putExtra("lastSeasonId", lastSeason?.key)
             intent.putExtra("lastSeasonString", lastSeason?.value)
 
-            startActivity(intent)
+//            startActivity(intent)
         }
     }
 
