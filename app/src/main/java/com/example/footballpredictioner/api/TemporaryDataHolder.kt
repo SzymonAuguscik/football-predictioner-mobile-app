@@ -180,4 +180,27 @@ object TemporaryDataHolder {
         }
     }
 
+    fun createMapToMatchesTable(currentSeason: String?) : MutableMap<String, String> {
+        val indicesToTeams = mutableMapOf<String, String>()
+        val splitStringTable = dataBaseHelper.getTeamsFromSeason(currentSeason).dropLast(1).split('\n')
+
+        splitStringTable.forEach { row ->
+            val splitValues = row.split(',')
+            indicesToTeams[splitValues[0]] = splitValues[1]
+        }
+
+        return indicesToTeams
+    }
+
+    fun createMapToUrls(currentSeason: String?) : MutableMap<String, String> {
+        val indicesToTeams = mutableMapOf<String, String>()
+        val splitStringTable = dataBaseHelper.getUrlsFromSeason(currentSeason).dropLast(1).split('\n')
+
+        splitStringTable.forEach { row ->
+            val splitValues = row.split(',')
+            indicesToTeams[splitValues[0]] = splitValues[1]
+        }
+
+        return indicesToTeams
+    }
 }

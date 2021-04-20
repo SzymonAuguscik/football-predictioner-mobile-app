@@ -34,7 +34,7 @@ class PredictActivity : AppCompatActivity() {
         val logoUrl = intent.getStringExtra("logoUrl")
         Picasso.get().load(logoUrl).into(predictionLogo)
 
-        val currentSeason = intent.getIntExtra("currentSeason", -1)
+        val currentSeason = intent.getStringExtra("currentSeason")
         val matches = intent.getStringExtra("matches")
         val predictions = intent.getStringExtra("predictions")
 
@@ -47,20 +47,8 @@ class PredictActivity : AppCompatActivity() {
         }
     }
 
-    private fun createMapToMatchesTable(currentSeason: Int) : MutableMap<String, String> {
-        val indicesToTeams = mutableMapOf<String, String>()
-        val splitStringTable = TemporaryDataHolder.dataBaseHelper.getTeamsFromSeason(currentSeason.toString()).dropLast(1).split('\n')
-
-        splitStringTable.forEach { row ->
-            val splitValues = row.split(',')
-            indicesToTeams[splitValues[0]] = splitValues[1]
-        }
-
-        return indicesToTeams
-    }
-
-    private fun mapMatches(currentSeason: Int, matchesString: String?, predictionsString: String?) : Array<SinglePredictionRowModel> {
-        val teamsMap = createMapToMatchesTable(currentSeason)
+    private fun mapMatches(currentSeason: String?, matchesString: String?, predictionsString: String?) : Array<SinglePredictionRowModel> {
+        val teamsMap = TemporaryDataHolder.createMapToMatchesTable(currentSeason)
         val predictionRecords = mutableListOf<SinglePredictionRowModel>()
         val predictionLabels = mapOf("0" to "home team wins", "1" to "draw", "2" to "away team wins")
 
@@ -68,7 +56,7 @@ class PredictActivity : AppCompatActivity() {
         val splitPredictions = predictionsString?.split('\n')
 
         if (splitMatches != null) {
-            for (i in 0 until splitMatches.size-1) {
+            for (i in 0 until splitMatches.size - 1) {
                 val teams = splitMatches[i].split(',')
                 val predictions = splitPredictions?.get(i)?.split(',')
                 val date = TemporaryDataHolder.dataBaseHelper.getDateOfMatch(teams[0], teams[1]).dropLast(1)

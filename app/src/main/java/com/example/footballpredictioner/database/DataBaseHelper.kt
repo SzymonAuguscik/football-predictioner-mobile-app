@@ -272,9 +272,14 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         return getSelectAsText(query)
     }
 
-
     fun getTeamsFromSeason(seasonID: String?) : String {
         val query = "SELECT $TEAM_ID, $TEAM_NAME FROM $TEAMS_TABLE WHERE $SEASON_ID = $seasonID"
+
+        return getSelectAsText(query)
+    }
+
+    fun getUrlsFromSeason(seasonID: String?) : String {
+        val query = "SELECT $TEAM_ID, $LOGO_URL FROM $TEAMS_TABLE WHERE $SEASON_ID = $seasonID"
 
         return getSelectAsText(query)
     }
@@ -316,8 +321,8 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
     }
 
+    @SuppressLint("Recycle")
     fun getTeamLastFiveMatches(teamId:Long): ArrayList<MatchModel> {
-
         val resultArray = arrayListOf<MatchModel>()
         val query = "SELECT * FROM $MATCHES_TABLE WHERE DATE < (SELECT DATE('now')) AND ($LOCAL_TEAM_ID = $teamId OR $VISITOR_TEAM_ID = $teamId)  ORDER BY DATE DESC LIMIT 5"
 
@@ -341,7 +346,7 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
         return resultArray
     }
 
-
+    @SuppressLint("Recycle")
     fun getTeamNameById(teamId:Long): String{
 
         var result = ""
@@ -362,6 +367,20 @@ class DataBaseHelper(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAM
 
     fun getLogoById(teamID: String) : String {
         val query = "SELECT $LOGO_URL FROM $TEAMS_TABLE WHERE $TEAM_ID = $teamID"
+
+        return getSelectAsText(query)
+    }
+
+    fun getRoundsFromSeason(seasonID: String?) : String {
+        val query = "SELECT $ROUND_ID FROM $ROUNDS_TABLE WHERE $SEASON_ID = $seasonID AND " +
+                    "$START_DATE < DATE('now')"
+
+        return getSelectAsText(query)
+    }
+
+    fun getMatchesFromRound(roundID: String) : String {
+        val query = "SELECT $LOCAL_TEAM_ID, $VISITOR_TEAM_ID, $LOCAL_TEAM_SCORE, $VISITOR_TEAM_SCORE " +
+                    "FROM $MATCHES_TABLE WHERE $ROUND_ID = $roundID"
 
         return getSelectAsText(query)
     }
