@@ -3,20 +3,14 @@ package com.example.footballpredictioner
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
-import android.view.View
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.footballpredictioner.adapters.PredictionAdapter
 import com.example.footballpredictioner.adapters.TableAdapter
 import com.example.footballpredictioner.api.TemporaryDataHolder
 import com.example.footballpredictioner.models.TeamModel
 import com.squareup.picasso.Picasso
-import java.text.FieldPosition
 
 class TableActivity : AppCompatActivity(), TableAdapter.OnItemClickListener{
 
@@ -43,7 +37,8 @@ class TableActivity : AppCompatActivity(), TableAdapter.OnItemClickListener{
         currentSeasonYear.text = chosenLeagueLastSeasonString
 
 
-        val adapterArrayList  = TemporaryDataHolder.dataBaseHelper.getTeamsFromGivenSeason(chosenLeagueLastSeasonId, chosenLeagueName!!)
+        val adapterArrayList = TemporaryDataHolder.dataBaseHelper.getTeamsFromGivenSeason(chosenLeagueLastSeasonId, chosenLeagueName!!)
+            .sortedWith(compareBy { (it.wins*3)+it.draws }).reversed()
         teamsAdapter = TableAdapter(adapterArrayList,this,this)
         teamsAdapter.notifyDataSetChanged()
 
@@ -58,10 +53,10 @@ class TableActivity : AppCompatActivity(), TableAdapter.OnItemClickListener{
         val team = teamsAdapter.dataSet[position]
         val intent = Intent(this, ChosenTeamActivity::class.java)
 
-        intent.putExtra("teamId",team.id)
-        intent.putExtra("teamName",team.name)
-        intent.putExtra("teamLogoUrl",team.logoPath)
-        intent.putExtra("teamCurrSeasonId",team.season)
+        intent.putExtra("teamId", team.id)
+        intent.putExtra("teamName", team.name)
+        intent.putExtra("teamLogoUrl", team.logoPath)
+        intent.putExtra("teamCurrSeasonId", team.season)
 
         startActivity(intent)
     }

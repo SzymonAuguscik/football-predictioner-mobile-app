@@ -3,6 +3,7 @@ package com.example.footballpredictioner
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
+import com.example.footballpredictioner.adapters.LastFiveAdapter
 import com.example.footballpredictioner.api.TemporaryDataHolder
 import com.squareup.picasso.Picasso
 
@@ -33,6 +34,8 @@ class ChosenTeamActivity : AppCompatActivity() {
         val chosenTeamLast5Matches = TemporaryDataHolder.dataBaseHelper.getTeamLastFiveMatches(teamId)
         val arrayOfLast5MatchesStrings = arrayListOf<String>()
 
+
+
         chosenTeamLast5Matches.forEach{ match ->
             val localTeam = TemporaryDataHolder.dataBaseHelper.getTeamNameById(match.localTeamId)
             val visitorTeam = TemporaryDataHolder.dataBaseHelper.getTeamNameById(match.visitorTeamId)
@@ -42,8 +45,10 @@ class ChosenTeamActivity : AppCompatActivity() {
         }
 
 
-        val newAdapter = ArrayAdapter(this,R.layout.match_row_in_list,R.id.match_result, arrayOfLast5MatchesStrings)
-        lastFiveMatchesList.adapter = newAdapter
+//        val newAdapter = ArrayAdapter(this,R.layout.match_row_in_list,R.id.match_result, arrayOfLast5MatchesStrings)
+        val customAdapter = LastFiveAdapter(chosenTeamLast5Matches,teamName,this)
+
+        lastFiveMatchesList.adapter = customAdapter
 
         println(arrayOfLast5MatchesStrings.size)
 

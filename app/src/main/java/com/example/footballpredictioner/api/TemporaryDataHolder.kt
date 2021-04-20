@@ -7,6 +7,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley.newRequestQueue
 import com.example.footballpredictioner.database.DataBaseHelper
+import com.example.footballpredictioner.models.LeagueModel
 import com.example.footballpredictioner.models.MatchModel
 import com.example.footballpredictioner.models.RoundModel
 import com.example.footballpredictioner.models.TeamModel
@@ -27,7 +28,7 @@ object TemporaryDataHolder {
         queue.add(request)
     }
 
-    fun handleTeamsResponse(response:JSONObject, leagueName:String){
+    fun handleTeamsResponse(response:JSONObject, league:LeagueModel){
         response.let {
             val teams = response.getJSONArray("data")
             val teamsCount = teams.length()
@@ -41,16 +42,16 @@ object TemporaryDataHolder {
                 val teamVenueId = team.getInt("venue_id")
                 val seasonId = team.getInt("current_season_id")
 
-                val teamModel = TeamModel(teamId.toLong(), teamName, teamLogoPath, leagueName, teamVenueId.toString(), seasonId.toString())
+                val teamModel = TeamModel(teamId.toLong(), teamName, teamLogoPath, league.name, teamVenueId.toString(), seasonId.toString())
 
-                fetchTeamStatistics(teamId,seasonId ,teamModel)
+                fetchTeamStatistics(teamId, seasonId ,teamModel, league.id)
 
 
             }
         }
     }
 
-    private fun fetchTeamStatistics(teamId: Int, seasonId:Int, teamModel: TeamModel){
+    private fun fetchTeamStatistics(teamId: Int, seasonId:Int, teamModel: TeamModel, leagueId:Long){
 
         val teamStatsUrl = Uri.Builder().scheme(NetworkHandler.SCHEME).authority(NetworkHandler.AUTHORITY)
             .appendPath(NetworkHandler.API_PATH)
@@ -64,7 +65,7 @@ object TemporaryDataHolder {
 
         val teamStatsJsonObjReq = JsonObjectRequest(
             Request.Method.GET, teamStatsUrl, null,
-            { response -> handleTeamStatsResponse(response, teamModel) },
+            { response -> handleTeamStatsResponse(response, teamModel, leagueId) },
             { error -> println("Error occurred - status: ${error?.message}") }
         )
 
@@ -73,8 +74,9 @@ object TemporaryDataHolder {
     }
 
 
-    private fun handleTeamStatsResponse(response: JSONObject, teamModel: TeamModel) {
+    private fun handleTeamStatsResponse(response: JSONObject, teamModel: TeamModel, leagueId: Long) {
         response.let {
+
             val data = response.getJSONObject("data")
             val statsData = data.getJSONObject("stats").getJSONArray("data").get(0) as JSONObject
 
@@ -92,7 +94,36 @@ object TemporaryDataHolder {
 
             dataBaseHelper.addNewTeam(teamModel)
 
+            sendRequestForMatches(leagueId.toString())
+
         }
+
+    }
+
+
+    private fun sendRequestForMatches(leagueId:String){
+
+
+        val borderDates = dataBaseHelper.getSeasonBorderDates()
+
+
+        val matchesOfSeasonUrl= Uri.Builder().scheme(NetworkHandler.SCHEME).authority(NetworkHandler.AUTHORITY)
+            .appendPath(NetworkHandler.API_PATH)
+            .appendPath(NetworkHandler.API_VERSION)
+            .appendPath("fixtures")
+            .appendPath("between")
+            .appendPath(borderDates?.first)
+            .appendPath(borderDates?.second)
+            .appendQueryParameter("api_token", NetworkHandler.API_TOKEN)
+            .appendQueryParameter("leagues", leagueId)
+
+
+        val matchJsonObjReq = JsonObjectRequest(Request.Method.GET, matchesOfSeasonUrl.build().toString(), null,
+            { response -> handleMatchResponse(response, matchesOfSeasonUrl) },
+            { error -> println("Error occurred - status: ${error?.message}") }
+        )
+
+        add(matchJsonObjReq)
 
     }
 
@@ -137,7 +168,7 @@ object TemporaryDataHolder {
 
             for (i in 2 until totalPages+1){
 
-
+                println("pagination num: $i")
                 val nextPageUrl = "${matchesUrl.build()}&page=${i}"
 
                 val matchJsonObjReq = JsonObjectRequest(Request.Method.GET, nextPageUrl, null,
@@ -151,7 +182,7 @@ object TemporaryDataHolder {
         }
     }
 
-    private fun handleMatchNextPage(response: JSONObject?) {
+private fun handleMatchNextPage(response: JSONObject?) {
 
         response?.let {
 

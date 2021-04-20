@@ -5,10 +5,10 @@ import android.content.Context
 import android.net.Uri
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
+import com.example.footballpredictioner.models.LeagueModel
 
 
 class NetworkHandler(context: Context) {
-
 
     init {
         TemporaryDataHolder.prepare(context)
@@ -27,7 +27,7 @@ class NetworkHandler(context: Context) {
 
     }
 
-    fun sendRequestForTeams(leagueName:String, seasonId:String){
+    fun sendRequestForTeams(league:LeagueModel, seasonId:String){
 
          val teamsUrl = Uri.Builder().scheme(SCHEME).authority(AUTHORITY)
              .appendPath(API_PATH)
@@ -39,7 +39,9 @@ class NetworkHandler(context: Context) {
 
 
         val teamsJsonObjReq = JsonObjectRequest(Request.Method.GET, teamsUrl, null,
-                { response -> TemporaryDataHolder.handleTeamsResponse(response, leagueName)},
+                { response ->
+                    TemporaryDataHolder.handleTeamsResponse(response, league)
+                },
                 { error -> println("Error occurred - status: ${error?.message}") }
         )
 
@@ -70,9 +72,9 @@ class NetworkHandler(context: Context) {
     }
 
 
-    fun sendRequestForMatches(leagueId:String){
+    private fun sendRequestForMatches(leagueId:String){
 
-        //Premiership rounds dates
+
         val borderDates = TemporaryDataHolder.dataBaseHelper.getSeasonBorderDates()
 
 
@@ -94,11 +96,6 @@ class NetworkHandler(context: Context) {
 
         TemporaryDataHolder.add(matchJsonObjReq)
 
-
-
     }
-
-
-
 
 }

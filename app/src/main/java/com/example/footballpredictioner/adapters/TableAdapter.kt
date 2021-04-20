@@ -1,7 +1,6 @@
 package com.example.footballpredictioner.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +14,10 @@ import com.example.footballpredictioner.R
 import com.example.footballpredictioner.models.TeamModel
 import com.squareup.picasso.Picasso
 
-class TableAdapter(var dataSet: ArrayList<TeamModel>,
-                   var context: Context,
-                   val listener: OnItemClickListener): RecyclerView.Adapter<TableAdapter.ViewHolder>() {
+class TableAdapter(
+    var dataSet: List<TeamModel>,
+    var context: Context,
+    val listener: OnItemClickListener): RecyclerView.Adapter<TableAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view),
     View.OnClickListener{
@@ -49,7 +49,7 @@ class TableAdapter(var dataSet: ArrayList<TeamModel>,
 
         val singleTeam = dataSet[position]
         Picasso.get().load(singleTeam.logoPath).into(viewHolder.teamLogo)
-        viewHolder.positionInLeague.text = position.toString()
+        viewHolder.positionInLeague.text = (position + 1).toString()
         viewHolder.teamName.text = singleTeam.name
 
         val singleTeamPlayedMatches = singleTeam.wins + singleTeam.draws + singleTeam.loses

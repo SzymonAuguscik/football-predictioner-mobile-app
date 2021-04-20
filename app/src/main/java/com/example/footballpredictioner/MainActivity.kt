@@ -10,6 +10,7 @@ import com.example.footballpredictioner.api.NetworkHandler
 import com.example.footballpredictioner.api.TemporaryDataHolder
 import com.example.footballpredictioner.models.LeagueModel
 import kotlin.properties.Delegates
+import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
@@ -28,12 +29,25 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         /* In professional distribution such kind of array should be fetched,
         *  for now it is statically initialized with fixed values.  */
+//        leagues = arrayOf(
+//            LeagueModel((-1).toLong(), "Pick a league...", null, null),
+//
+//            LeagueModel(501.toLong(), "Scottish Premiership",
+//                "https://cdn.sportmonks.com/images/soccer/leagues/501.png",
+//                seasons = mapOf(17141 to "2020/2021", 16222 to "2019/2020", 12963 to "2018/2019")),
+//
+//            LeagueModel(271.toLong(), "Superliga",
+//                "https://cdn.sportmonks.com/images/soccer/leagues/271.png",
+//                seasons = mapOf(17328 to "2020/2021", 16020 to "2019/2020", 12919 to "2018/2019"))
+//        )
+
+
         leagues = arrayOf(
             LeagueModel((-1).toLong(), "Pick a league...", null, null),
 
             LeagueModel(501.toLong(), "Scottish Premiership",
                 "https://cdn.sportmonks.com/images/soccer/leagues/501.png",
-                seasons = mapOf(17141 to "2020/2021", 16222 to "2019/2020", 12963 to "2018/2019")),
+                seasons = mapOf(17141 to "2020/2021", 16222 to "2019/2020")),
 
             LeagueModel(271.toLong(), "Superliga",
                 "https://cdn.sportmonks.com/images/soccer/leagues/271.png",
@@ -57,11 +71,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             /* Necessary requests for possible updates and then running python script with AI */
             // TODO We should put code below into new thread to prevent next activity long loading
 
-            chosenLeagueSeasons?.forEach { (key,_) ->
-                networkHandler.sendRequestForRounds(key.toString())
-                networkHandler.sendRequestForTeams(chosenLeague.name, key.toString())
-                networkHandler.sendRequestForMatches(chosenLeague.id.toString())
-            }
+//            chosenLeagueSeasons?.forEach { (key,_) ->
+//                networkHandler.sendRequestForRounds(key.toString()) // 3 req for rounds in each season
+//                networkHandler.sendRequestForTeams(chosenLeague, key.toString()) // 3 req for teams in each season
+//            }
+
+
 
             val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
             val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
@@ -156,7 +171,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             intent.putExtra("lastSeasonId", lastSeason?.key)
             intent.putExtra("lastSeasonString", lastSeason?.value)
 
-//            startActivity(intent)
+            startActivity(intent)
         }
     }
 
@@ -177,4 +192,6 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+
 }

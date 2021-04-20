@@ -43,13 +43,15 @@ class ScheduleActivity : AppCompatActivity() {
         val splitMatches = matchString.split('\n')
         val mapOfUrls = TemporaryDataHolder.createMapToUrls(currentSeason)
 
-        splitMatches.forEach { matchRecord ->
-            val splitMatch = matchRecord.split(',')
-            val homeUrl = mapOfUrls[splitMatch[0]]
-            val awayUrl = mapOfUrls[splitMatch[1]]
-            val innerModel = ScheduleInnerModel(splitMatch[2], splitMatch[3], homeUrl, awayUrl)
+        if(matchString.isNotEmpty()){
+            splitMatches.forEach { matchRecord ->
+                val splitMatch = matchRecord.split(',')
+                val homeUrl = mapOfUrls[splitMatch[0]]
+                val awayUrl = mapOfUrls[splitMatch[1]]
+                val innerModel = ScheduleInnerModel(splitMatch[2], splitMatch[3], homeUrl, awayUrl)
 
-            innerModels.add(innerModel)
+                innerModels.add(innerModel)
+            }
         }
 
         return innerModels
