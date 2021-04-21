@@ -29,30 +29,19 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         /* In professional distribution such kind of array should be fetched,
         *  for now it is statically initialized with fixed values.  */
-//        leagues = arrayOf(
-//            LeagueModel((-1).toLong(), "Pick a league...", null, null),
-//
-//            LeagueModel(501.toLong(), "Scottish Premiership",
-//                "https://cdn.sportmonks.com/images/soccer/leagues/501.png",
-//                seasons = mapOf(17141 to "2020/2021", 16222 to "2019/2020", 12963 to "2018/2019")),
-//
-//            LeagueModel(271.toLong(), "Superliga",
-//                "https://cdn.sportmonks.com/images/soccer/leagues/271.png",
-//                seasons = mapOf(17328 to "2020/2021", 16020 to "2019/2020", 12919 to "2018/2019"))
-//        )
-
 
         leagues = arrayOf(
             LeagueModel((-1).toLong(), "Pick a league...", null, null),
 
             LeagueModel(501.toLong(), "Scottish Premiership",
                 "https://cdn.sportmonks.com/images/soccer/leagues/501.png",
-                seasons = mapOf(17141 to "2020/2021", 16222 to "2019/2020")),
+                seasons = mapOf(17141 to "2020/2021", 16222 to "2019/2020", 12963 to "2018/2019")),
 
             LeagueModel(271.toLong(), "Superliga",
                 "https://cdn.sportmonks.com/images/soccer/leagues/271.png",
                 seasons = mapOf(17328 to "2020/2021", 16020 to "2019/2020", 12919 to "2018/2019"))
         )
+
 
         val leaguesAdapter = ArrayAdapter(this,
             R.layout.support_simple_spinner_dropdown_item,
@@ -68,8 +57,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val chosenLeague = leagues[idx]
             val chosenLeagueSeasons = chosenLeague.seasons
 
-            /* Necessary requests for possible updates and then running python script with AI */
-            // TODO We should put code below into new thread to prevent next activity long loading
+
+            /* Due to limitation of requests number (free version of API allows 180 per hour)*/
 
 //            chosenLeagueSeasons?.forEach { (key,_) ->
 //                networkHandler.sendRequestForRounds(key.toString()) // 3 req for rounds in each season
@@ -77,84 +66,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 //            }
 
 
-
             val playedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyPlayedMatches().dropLast(1)
             val nonPlayedMatchesTable = TemporaryDataHolder.dataBaseHelper.getOnlyNonPlayedMatches().dropLast(1)
-//            val pythonModuleName = "ai_predictioner"
-//            val pythonFunctionName = "make_predictions"
-//            val predictions = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable).dropLast(1)
-            val predictions = """2,2,2
-0,1,1
-2,2,2
-0,1,1
-0,1,0
-0,0,0
-2,0,2
-0,0,0
-2,2,2
-0,1,1
-0,0,0
-0,0,0
-0,2,0
-0,0,0
-0,2,0
-0,0,0
-0,2,0
-0,1,0
-0,1,0
-0,0,0
-0,2,0
-0,0,0
-0,0,0
-0,0,0
-0,0,0
-0,0,0
-2,2,2
-2,1,0
-0,2,0
-2,0,0
-0,0,0
-2,2,2
-2,2,2
-2,2,0
-0,0,0
-0,0,0
-0,0,0
-0,2,2
-2,1,2
-0,0,0
-0,2,0
-0,0,0
-0,0,0
-0,1,0
-2,0,0
-0,0,0
-0,2,0
-2,0,2
-2,2,0
-0,0,0
-2,0,0
-2,2,0
-0,2,0
-2,0,0
-0,0,2
-0,0,0
-0,0,0
-0,1,0
-0,0,0
-0,1,0
-0,0,0
-2,1,0
-2,0,0
-2,0,0
-2,0,0
-0,0,0
-0,2,0
-0,0,0
-0,2,0
-0,2,0
-0,0,0
-2,0,0"""
+            val pythonModuleName = "ai_predictioner"
+            val pythonFunctionName = "make_predictions"
+            val predictions = getPythonScript(pythonModuleName, pythonFunctionName, playedMatchesTable, nonPlayedMatchesTable).dropLast(1)
+
 
             val itr = chosenLeague.seasons?.entries?.iterator()
             val lastSeason = itr?.next()
